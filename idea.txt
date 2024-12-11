@@ -1,0 +1,16 @@
+Kunde an Tische (max 8 pro Tisch)
+12 Tische, 1 für 8, 2 für 6, 3 für 4, 6 für 2
+
+UI für Tische:
+zeigen, dass der Tisch mit so und so 
+vielen Personen schon besetzt ist, Gruppen müssen
+eingeteilt werden.
+
+UI für Bestellungen:
+Klicken für Table, dann Popup die Sitze besetzt oder net, klick
+auf Person, bestellung food mit nummern (veränderbar bis 
+Bezahlung), speichern und bezahl option
+
+Bestellung:
+per Person, Ergebnis muss per Person (T1S1 etc) eingespeichert 
+werden, Summe als Tisch auch ausgebbar.
