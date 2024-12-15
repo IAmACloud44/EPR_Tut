@@ -1,9 +1,9 @@
 '''--- Menu ---'''
 
-import pandas
+import pandas as pd
 import json
 
-df = pandas.read_excel('food.xlsx') # Be careful with the file path!
+df = pd.read_excel('food.xlsx') # Be careful with the file path!
 
 menu = {}
 for typ, group_typ in df.groupby("typ"):
@@ -12,3 +12,13 @@ for typ, group_typ in df.groupby("typ"):
         menu[typ][category] = group_category.set_index("name")["price"].to_dict()
 
 print((json.dumps(menu, indent=4)))
+
+# Restaurant Table arrangement
+def assign_tables(seats):
+    dict[table] = {}
+    for i in range (0,8):
+        dict.add[table] = i
+
+
+def take_tables(table, clients):
+    pass
