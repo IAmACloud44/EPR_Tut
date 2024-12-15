@@ -20,15 +20,18 @@ class Table:
         self.seats = seats
         self.taken = 0
 
+    def __str__(self):
+        return self.table_number
+
     def show_table(self):
         print(f"{self.table_number},{self.seats},{self.taken}")
     
     def taken_seat(self, taken):
-        self.taken = taken
-        
+        self.taken += taken
+
 
 tablers = {
-    "Table1" : Table(1, 8),
+    "Table1" : Table("Table1", 8),
     "Table2" : Table(2, 6),
     "Table3" : Table(3, 6),
     "Table4" : Table(4, 4),
@@ -41,8 +44,3 @@ tablers = {
     "Table11" : Table(11, 2),
     "Table12" : Table(12, 2)
 }
-
-
-tablers["Table3"].show_table()
-tablers["Table2"].taken_seat(5)
-tablers["Table3"].show_table()
