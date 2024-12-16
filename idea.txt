@@ -14,3 +14,41 @@ Bezahlung), speichern und bezahl option
 Bestellung:
 per Person, Ergebnis muss per Person (T1S1 etc) eingespeichert 
 werden, Summe als Tisch auch ausgebbar.
+
+
+tische UI:
+
+          _     _     _
+         | |   | |   | |
+      _____________________
+  _  |                     |  _
+ | | |                     | | |
+     |_____________________|
+          _     _     _
+         | |   | |   | |
+
+         _     _
+        | |   | |
+      _____________
+  _  |             |  _
+ | | |             | | |
+     |_____________|
+         _     _
+        | |   | |
+
+
+         _
+        | |
+      _______
+     |       |
+  _  |       |  _
+ | | |       | | |
+     |_______|
+         _
+        | |
+
+
+      _______
+  _  |       |  _
+ | | |       | | |
+     |_______|
