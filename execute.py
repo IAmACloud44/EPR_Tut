@@ -10,16 +10,13 @@ def excecute():
         return
 
     available = [table for table in tablers.values() if table.seats >= input_people and table.seats - table.taken >= input_people]
-    print(available)
-
-    for i in range(len(available)):
-        available[i].show_table()
+    print(str(available))
 
     input_table = input("Please input where you want to seat them: ")
 
-    if input_table not in available:
-        print("That Table is not available.")
-        return
+    # if input_table not in available:
+    #     print("That Table is not available.")
+    #     return
 
     if input_people > tablers[input_table].seats or input_people > tablers[input_table].seats - tablers[input_table].taken:
         print("Not enough seats.")
