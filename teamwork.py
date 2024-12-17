@@ -22,7 +22,8 @@ class Menu():
         def search(menu):
             for key, value in menu.items():
                 if key == position:
-                    return {'position': key, 'price': value, 'amount': amount}
+                    return {'position': key, 'price': value, 
+                            'amount': amount}
                 elif isinstance(value, dict):
                     deeper = search(value)
                     if deeper: return deeper
@@ -81,7 +82,7 @@ class Order():
             writer.writerows(all_positions)
 
         return [self.order_id] + self.order_per_person
-    
+
 menu = Menu()
 order = Order()
 order.add_position(menu, 'FOREST-BURGER', 2)
@@ -90,10 +91,14 @@ order.remove_position('FOREST-BURGER')
 order.add_position(menu, 'PIZZA-HAWAI', 1)
 order.complete_order(0)
 
-##########################################################################################
+############################################################################
+
+
+
+############################################################################
 
 # Restaurant Table arrangement
-class Table:
+class Restaurant:
     def __init__(self, table_number, seats):
         self.table_number = table_number  # Table numbers
         self.seats = seats  # Total Seats
@@ -104,23 +109,24 @@ class Table:
 
     # show the text nicer
     def show_table(self):
-        print(f"Table {self.table_number}: {self.seats} seats, {self.taken} taken seats")
+        print(f"Table {self.table_number}: {self.seats} seats, 
+              {self.taken} taken seats")
     
     def taken_seat(self, taken):
         self.taken += taken  # Update the taken seats
 
 
 tablers = [
-    Table(1, 8),
-    Table(2, 6),
-    Table(3, 6),
-    Table(4, 4),
-    Table(5, 4),
-    Table(6, 4),
-    Table(7, 2),
-    Table(8, 2),
-    Table(9, 2),
-    Table(10, 2),
-    Table(11, 2),
-    Table(12, 2)
+    Restaurant(1, 8),
+    Restaurant(2, 6),
+    Restaurant(3, 6),
+    Restaurant(4, 4),
+    Restaurant(5, 4),
+    Restaurant(6, 4),
+    Restaurant(7, 2),
+    Restaurant(8, 2),
+    Restaurant(9, 2),
+    Restaurant(10, 2),
+    Restaurant(11, 2),
+    Restaurant(12, 2)
 ]

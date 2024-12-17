@@ -6,11 +6,13 @@ def excecute():
     The function to execute the entire program.
     
     program designed so that it manages orders and creates invoices. 
-    It should be possible to view each table individually. Orders should be taken per table. 
-    The products ordered should be noted for each table. Of course, there can be repeat orders.
+    It should be possible to view each table individually. Orders should be 
+    taken per table. The products ordered should be noted for each table.
+    Of course, there can be repeat orders.
     
-    An invoice should be able to be created at the end. In order to be able to resolve discrepancies, 
-    it must be possible to cancel or add individual items up until the invoice is paid.
+    An invoice should be able to be created at the end. In order to be able
+    to resolve discrepancies, it must be possible to cancel or add 
+    individual items up until the invoice is paid.
     
     >>> input_people(5)
     >>> Table 1: 8 seats, 0 taken seats
@@ -45,7 +47,9 @@ def excecute():
     input_table = int(input("Please input where you want to seat them: "))
 
     # ensures that the number put in is valid
-    selected_table = next((table for table in tablers if table.table_number == input_table), None)
+    selected_table = next(
+        (table for table in tablers if table.table_number == input_table), 
+        None)
 
     # check wether the selected table is even available
     if selected_table not in available:
