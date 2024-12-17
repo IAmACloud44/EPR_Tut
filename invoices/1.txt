@@ -1,4 +1,0 @@
-The order Nr: 1 
-COLA (0.4)	3.5	1
-PIZZA-HAWAI	10.0	1
-Sum EUR	13.5
