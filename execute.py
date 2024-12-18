@@ -65,17 +65,13 @@ def ordering():
     
     while True:
         order_input = input("What would you like to order today? ") 
-        amount_input = input("How many of those do you want? ")
-        preferences_input = input("Any preferences? ")
-        order.add_food(menu, order_input, amount_input, preferences_input)
         if order_input == "Nothing":
-            return False
-    
-    order.complete_order()   
-        
-        
-    
-    
+            order.complete_order()
+        else:
+            amount_input = input("How many of those do you want? ")
+            preferences_input = input("Any preferences? ")
+            order.add_food(menu, order_input, amount_input, preferences_input)    
+
     # order_input = input("What would you like to order today? ") 
     # amount_input = input("How many of those do you want? ")
     # try:
