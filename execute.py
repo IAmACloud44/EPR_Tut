@@ -60,7 +60,7 @@ def take_seats():
 
 def ordering():
     menu = Menu()
-    # menu.show_menu()
+    menu.show_menu()
     order = Order()
     
     while True:
@@ -68,7 +68,7 @@ def ordering():
         if order_input == "Nothing":
             order.complete_order()
         else:
-            amount_input = input("How many of those do you want? ")
+            amount_input = int(input("How many of those do you want? "))
             preferences_input = input("Any preferences? ")
             order.add_food(menu, order_input, amount_input, preferences_input)    
 
