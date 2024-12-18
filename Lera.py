@@ -13,7 +13,11 @@ class Menu():
                 self.__menu[typ][category] = group_category.set_index("name")[
                     "price"].to_dict()
 
+        return
+
+    def show_menu(self):
         print((json.dumps(self.__menu, indent=4)))
+        
 
     def take_position(self, position, amount):
 
@@ -136,3 +140,10 @@ class Restaurant():
         # occupied by other customers.
         del self.occupied_tables[table_id]
         return self.occupied_tables
+    
+
+menu = Menu()
+menu.show_menu()
+order = Order()
+order.add_position(menu, 'FOREST-BURGER', 2, 'no cheese')
+order.complete_order()

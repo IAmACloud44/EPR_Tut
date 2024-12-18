@@ -2,43 +2,102 @@
 
 import pandas
 import json
-
+import csv
 
 class Menu():
 
     def __init__(self):
-        self.menu = {}
-
+        self.__menu = {}
         df = pandas.read_excel('food.xlsx')  # Be careful with the file path!
         for typ, group_typ in df.groupby("typ"):
-            self.menu[typ] = {}
+            self.__menu[typ] = {}
             for category, group_category in group_typ.groupby("categorie"):
-                self.menu[typ][category] = group_category.set_index("name")[
+                self.__menu[typ][category] = group_category.set_index("name")[
                     "price"].to_dict()
 
-        print((json.dumps(self.menu, indent=4)))
+        return
 
-    def take_position(self, menu, position, amount):
+    def show_menu(self):
+        print((json.dumps(self.__menu, indent=4)))
+        
 
-        for key, value in menu.items():
-            if key == position:
-                print(f"You've ordered {amount} {key} for {value} €.")
-                return {key: value, 'amount': amount}
-            elif isinstance(value, dict):
-                result = self.take_position(value, position, amount)
-                if result: return result
-        '''If return None, ask for another position in the next function.'''
-        return None
+    def take_food(self, food, amount):
 
-# test = Menu()
-# test.take_position(test.menu, 'FOREST-BURGER', 1)
+        def search(menu):
+            for key, value in menu.items():
+                if key == food:
+                    return {'food': key, 'price': value, 'amount': amount}
+                elif isinstance(value, dict):
+                    deeper = search(value)
+                    if deeper: return deeper
+            return None
 
+        result = search(self.__menu)
+        if result: return result
+
+class Order():
+
+    order_id = 0
+
+    def __init__(self):
+        # order_per_person = [order_id,
+        # {'position': 'BURGER', 'price': 10.0, 'amount': 1},
+        # {'position': 'COLA 0.5', 'price': 3.5, 'amount': 1}]
+        Order.order_id += 1
+        self.order_per_person = [str(Order.order_id)]
+
+    def add_food(self, menu, food, amount, preferences=None):
+        take = menu.take_food(food, amount)
+
+        if take is None:
+            print('There is no such food on the menu.'
+                  'Try another food.\n'
+                  'If you have any difficulties, please contact the staff.')
+            self.add_food(menu, food, amount, preferences)
+
+        if preferences is not None:
+            if 'extra' in preferences.lower():
+                take['food'] = food + ' + ' + preferences
+                take['price'] += 1
+            elif 'no' in preferences.lower():
+                take['food'] = food + ' - ' + preferences
+
+        self.order_per_person.append(take)
+        print(self.order_per_person)
+        return self.order_per_person
+
+    def remove_food(self, food):
+        self.order_per_person = [item for item in self.order_per_person[1:]
+                                 if item["food"] != food]
+        print(f"You've removed {food} from your order.")
+        return self.order_per_person
+
+    def complete_order(self):
+        bill = 0
+        all_foods = []
+        # Be careful with the path!
+        path = r"C:\Users\Fuffi\Desktop\EPRRepo\invoices"
+
+        with open(rf"{path}\{self.order_id}.txt", "w") as invoice:
+            writer = csv.writer(invoice, delimiter="\t")
+            invoice.write(f"The order Nr: {self.order_id} \n")
+            for i in self.order_per_person:
+                if isinstance(i, dict):
+                    bill += i['price'] * i['amount']
+                    all_foods.append((i['food'],
+                                          i['price'],
+                                          i['amount']))
+            all_foods.append(('Sum EUR', bill))
+            writer.writerows(all_foods)
+
+        return [self.order_id] + self.order_per_person
 
 # Restaurant Table arrangement
-class Table:
+class Restaurant:
     def __init__(self, table_number, seats):
         self.table_number = table_number  # Table numbers
         self.seats = seats  # Total Seats
+        # self.all_tables[str(Restaurant.table_id)] = seats
         self.taken = 0  # Initial seat that are taken
 
     def __str__(self):
@@ -52,18 +111,18 @@ class Table:
         self.taken += taken  # Update the taken seats
 
 
-tables = [
-    Table(1, 8),
-    Table(2, 6),
-    Table(3, 6),
-    Table(4, 4),
-    Table(5, 4),
-    Table(6, 4),
-    Table(7, 2),
-    Table(8, 2),
-    Table(9, 2),
-    Table(10, 2),
-    Table(11, 2),
-    Table(12, 2)
+tablers = [
+    Restaurant(1, 8),
+    Restaurant(2, 6),
+    Restaurant(3, 6),
+    Restaurant(4, 4),
+    Restaurant(5, 4),
+    Restaurant(6, 4),
+    Restaurant(7, 2),
+    Restaurant(8, 2),
+    Restaurant(9, 2),
+    Restaurant(10, 2),
+    Restaurant(11, 2),
+    Restaurant(12, 2)
 ]
 
