@@ -13,11 +13,8 @@ class Menu():
                 self.__menu[typ][category] = group_category.set_index("name")[
                     "price"].to_dict()
 
-        return
-
     def show_menu(self):
         print((json.dumps(self.__menu, indent=4)))
-        
 
     def take_position(self, position, amount):
 
@@ -51,7 +48,7 @@ class Order():
             print('There is no such position on the menu.'
                   'Try another position.\n'
                   'If you have any difficulties, please contact the staff.')
-            self.add_position(menu, position, amount, preferences)
+            return None
 
         if preferences is not None:
             if 'extra' in preferences.lower():
@@ -72,7 +69,6 @@ class Order():
     def complete_order(self):
         bill = 0
         all_positions = []
-        # Be careful with the path!
         path = r"C:\Users\rener\Documents\GitHub\EPR_Teamwork\invoices"
 
         with open(rf"{path}\{self.order_id}.txt", "w") as invoice:
@@ -140,10 +136,9 @@ class Restaurant():
         # occupied by other customers.
         del self.occupied_tables[table_id]
         return self.occupied_tables
-    
 
 menu = Menu()
 menu.show_menu()
 order = Order()
-order.add_position(menu, 'FOREST-BURGER', 2, 'no cheese')
-order.complete_order()
+restaurant = Restaurant()
+order.add_position(menu, 'Non-MOZARELLA', 1)
