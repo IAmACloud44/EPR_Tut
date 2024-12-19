@@ -1,8 +1,11 @@
+__author__ = "8456041, Kolos, 7528006, Feldmann"
+
 '''--- Menu ---'''
 
 import pandas
-import json
+import yaml
 import csv
+
 
 class Menu():
 
@@ -18,8 +21,8 @@ class Menu():
         return
 
     def show_menu(self):
-        print((json.dumps(self.__menu, indent=4)))
-        
+        print(yaml.dump(self.__menu, default_flow_style=False))
+
 
     def take_food(self, food, amount):
 
@@ -34,6 +37,7 @@ class Menu():
 
         result = search(self.__menu)
         if result: return result
+
 
 class Order():
 
@@ -66,11 +70,13 @@ class Order():
         print(self.order_per_person)
         return self.order_per_person
 
+
     def remove_food(self, food):
         self.order_per_person = [item for item in self.order_per_person[1:]
                                  if item["food"] != food]
         print(f"You've removed {food} from your order.")
         return self.order_per_person
+
 
     def complete_order(self):
         bill = 0
@@ -92,6 +98,19 @@ class Order():
 
         return [self.order_id] + self.order_per_person
 
+
+class Table():
+
+    def __init__(self):
+        self.orders_per_table = []
+
+    def serve(self, table_number, order_id):
+        # Take an invoice from the order.
+        id = table_number + '0' + order_id
+        self.orders_per_table.append(id)
+        return self.orders_per_table
+
+
 # Restaurant Table arrangement
 class Restaurant:
     def __init__(self, table_number, seats):
@@ -101,14 +120,23 @@ class Restaurant:
         self.taken = 0  # Initial seat that are taken
 
     def __str__(self):
-        return f"Table {self.table_number}"
+        return f"Table {self.table_number}\n"
+
 
     # show the text nicer
     def show_table(self):
         print(f"Table {self.table_number}: {self.seats} seats, {self.taken} taken seats")
-    
+
+
     def taken_seat(self, taken):
         self.taken += taken  # Update the taken seats
+
+
+    def free_table(self, table_number):
+        # When the clients are done, their table becomes free and can be
+        # occupied by other customers.
+        del self.taken[table_number]
+        return self.taken
 
 
 tablers = [
@@ -125,4 +153,3 @@ tablers = [
     Restaurant(11, 2),
     Restaurant(12, 2)
 ]
-
