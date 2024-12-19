@@ -1,19 +1,47 @@
 from teamwork import tablers, Menu, Order
 
+
 # execute the program so it works
-def take_seats():
+def excecution():
     '''
     The function to execute the entire program.
-    
+
     program designed so that it manages orders and creates invoices. 
     It should be possible to view each table individually. Orders should be
     taken per table. The products ordered should be noted for each table.
     Of course, there can be repeat orders.
-    
+
     An invoice should be able to be created at the end. In order to be able
     to resolve discrepancies, it must be possible to cancel or add
     individual items up until the invoice is paid.
     '''
+
+    print("Choose an action: \n1. Take seats \n2. Order Food \n3. Update Orders \n4. Pay the Bill \n5. Shut down the program")
+    choice = input("What will you be doing today? ")
+    
+    if choice == "1":
+        take_seats()
+    if choice == "2":
+        ordering()
+    if choice == "3":
+        pass
+    if choice == "4":
+        pass
+    if choice == "5":
+        exit()
+
+def take_seats():
+    '''
+    Function for taking up and seating people
+    
+    does include how many people are in an incoming group, how many 
+    seats are taken
+    does not include if a seat has been left, will be included in paying
+    the bill.
+    
+    Has a continuous track of people coming in and taking seats.
+    '''
+
 
     # first asks how many people will arrive
     input_people = input("Please input how many people shall be seated: ") 
@@ -67,10 +95,14 @@ def ordering():
         order_input = input("What would you like to order today? ") 
         if order_input == "Nothing":
             order.complete_order()
+            return False
         else:
             amount_input = int(input("How many of those do you want? "))
-            preferences_input = input("Any preferences? ")
-            order.add_food(menu, order_input, amount_input, preferences_input)    
+            preferences_input = input("Any preferences? (Extra... or No...)")
+            if preferences_input == "No":
+                order.add_food(menu, order_input, amount_input)
+            else:
+                order.add_food(menu, order_input, amount_input, preferences_input)
 
     # order_input = input("What would you like to order today? ") 
     # amount_input = input("How many of those do you want? ")
@@ -98,4 +130,4 @@ def ordering():
 
 # keeps the code running till fatal error occurs
 while True:
-    ordering()
+    excecution()

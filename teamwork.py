@@ -76,7 +76,7 @@ class Order():
         bill = 0
         all_foods = []
         # Be careful with the path!
-        path = r"C:\Users\rener\Documents\GitHub\EPR_Teamwork\invoices"
+        path = r".\invoices"
 
         with open(rf"{path}\{self.order_id}.txt", "w") as invoice:
             writer = csv.writer(invoice, delimiter="\t")
