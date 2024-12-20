@@ -57,7 +57,7 @@ class Order():
             print('There is no such food on the menu.'
                   'Try another food.\n'
                   'If you have any difficulties, please contact the staff.')
-            self.add_food(menu, food, amount, preferences)
+            return None
 
         if preferences is not None:
             if 'extra' in preferences.lower():
@@ -78,15 +78,17 @@ class Order():
         return self.order_per_person
 
 
-    def complete_order(self):
+    def complete_order(self, table_id):
         bill = 0
         all_foods = []
         # Be careful with the path!
         path = r".\invoices"
+        
+        file_name = f"Table_{table_id}_Order_{self.order_id}.txt"
 
-        with open(rf"{path}\{self.order_id}.txt", "w") as invoice:
+        with open(rf"{path}\{file_name}.txt", "w") as invoice:
             writer = csv.writer(invoice, delimiter="\t")
-            invoice.write(f"The order Nr: {self.order_id} \n")
+            invoice.write(f"Table: {table_id}, Order Nr: {self.order_id}\n")
             for i in self.order_per_person:
                 if isinstance(i, dict):
                     bill += i['price'] * i['amount']
@@ -96,17 +98,20 @@ class Order():
             all_foods.append(('Sum EUR', bill))
             writer.writerows(all_foods)
 
-        return [self.order_id] + self.order_per_person
+        return [f"Table: {table_id}", self.order_id] + self.order_per_person
+    
+
 
 
 class Table():
+
 
     def __init__(self):
         self.orders_per_table = []
 
     def serve(self, table_number, order_id):
         # Take an invoice from the order.
-        id = table_number + '0' + order_id
+        id = str(table_number) + '0' + str(order_id)
         self.orders_per_table.append(id)
         return self.orders_per_table
 
@@ -130,6 +135,7 @@ class Restaurant:
 
     def taken_seat(self, taken):
         self.taken += taken  # Update the taken seats
+        return taken
 
 
     def free_table(self, table_number):

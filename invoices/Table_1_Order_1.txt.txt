@@ -1,0 +1,3 @@
+Table: 1, Order Nr: 1
+FOREST-BURGER	12.0	1
+Sum EUR	12.0
