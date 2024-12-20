@@ -1,4 +1,4 @@
 Table: 1, Order Nr: 1
-FOREST-BURGER	13.0	2	extra cheese
-BEER	4.0	2	no ice
-Sum EUR	34.0
+PIZZA-HAWAII	10.0	2	
+ICE-TEA (PEACH)	4.0	1	no ice
+Sum EUR	24.0

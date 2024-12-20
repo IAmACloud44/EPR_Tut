@@ -42,7 +42,7 @@ Choose an action:
     if choice == "4":
         exit()
     else: 
-        print("Not a valid input.")
+        print(" ")
 
 
 def take_seats():
@@ -176,7 +176,7 @@ def ordering():
             order.complete_order(table_input)
             break
 
-    if choice == "no":
+    if choice == "no" and order.order_per_person != []:
         order.complete_order(table_input)
         table_in_question = tablers[table_input-1]
         table_in_question.serve(table_input, order.order_id)
@@ -191,9 +191,6 @@ def pay_bill():
     except:
         print("Not a valid input.")
         return
-
-    pay_table = tablers[pay_table_input-1].taken
-    print(pay_table)
 
     onhold = tablers[pay_table_input-1].orders_per_table
     print(onhold)

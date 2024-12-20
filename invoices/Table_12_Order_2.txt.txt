@@ -1,4 +1,0 @@
-Table: 12, Order Nr: 2
-PIZZA-MOZAARELLA + extra cheese	11.0	2
-BEER - no ice	4.0	1
-Sum EUR	26.0
