@@ -1,0 +1,4 @@
+Table: 1, Order Nr: 3
+PIZZA-HAWAI - no cheese	10.0	3
+COLA (0.2) - no ice	2.5	2
+Sum EUR	35.0

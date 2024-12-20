@@ -1,6 +1,6 @@
 __author__ = "8456041, Kolos, 7528006, Feldmann"
 
-from teamwork import tablers, Menu, Order, Table
+from teamwork import tablers, Menu, Order
 
 
 # execute the program so it works
@@ -35,9 +35,10 @@ Choose an action:
     # order food
     if choice == "2":
         ordering()
-    # shut down
+    # pay the bill
     if choice == "3":
         pay_bill()
+    # shut down
     if choice == "4":
         exit()
     else: 
@@ -109,10 +110,13 @@ def ordering():
     # get order for all people at a table
     menu = Menu()
     order = Order()
-    table = Table()
     menu.show_menu()
 
-    table_input = int(input("What table wants to order? "))
+    try:
+        table_input = int(input("What table wants to order? "))
+    except:
+        print("Not a valid input.")
+        return
     table_id = tablers[table_input-1].taken
     
     try: 
@@ -123,45 +127,97 @@ def ordering():
     
     if table_id == 0:
         print(f"There are no guests at table {table_input}, please seat guests before ordering food.")
-    
-    for i in range(table_id):
-        while True:
-            order_input = input(f"What would customer {i+1} like to order today? (Type 'Done' if you are done.)").upper()
-            if order_input == "DONE":
-                order.complete_order(table_input)
-                break
-            try:
-                amount_input = int(input("How many of those do you want?" ))
-            except ValueError:
-                print("Please enter a valid amount.")
-                continue
-            
-            preferences_input = input("Any preferences? (Extra... or No...)")
-            if preferences_input == "No":
-                order.add_food(menu, order_input, amount_input)
-            else:
-                order.add_food(menu, order_input, amount_input, preferences_input)
-    
-    orderhold = table.serve(table_input, order.order_id)
-    print(f"Order {orderhold} has been placed")
+
+    while True:
+        order_input = input(f"What would the table like to order today? (Type 'Done' if you are done.) ").upper()
+        if order_input == "DONE":
+            break
+        try:
+            amount_input = int(input("How many of those do you want? "))
+        except ValueError:
+            print("Please enter a valid amount.")
+            continue
+        
+        preferences_input = input("Any preferences? (Extra... or No...) ").lower()
+        if preferences_input == "no":
+            order.add_position(menu, order_input, amount_input)
+        else:
+            order.add_position(menu, order_input, amount_input, preferences_input)
+
+    while True:
+        choice = input("Do you want to change something about the order? (Yes/No) ").lower()
+        if choice == "yes":
+
+            print("""
+1. Add food
+2. Remove food
+""")
+            update_choice = input("What do you want to do? ")
+
+            if update_choice == "1":
+                order_input = input("what food do you want to add? ").upper()
+                try:
+                    amount_input = int(input("How many of those do you want? "))
+                except ValueError:
+                    print("Please enter a valid amount.")
+                    continue
+                preferences_input = input("Any preferences? (Extra... or No...) ").lower()
+                if preferences_input == "no":
+                    order.add_position(menu, order_input, amount_input)
+                else:
+                    order.add_position(menu, order_input, amount_input, preferences_input)
+
+            if update_choice == "2":
+                print()
+                remove_choice = input("What food do you want removed? ").upper()
+                order.remove_position(remove_choice)
+                print()
+        if choice == "no":
+            order.complete_order(table_input)
+            break
+
+    if choice == "no":
+        order.complete_order(table_input)
+        table_in_question = tablers[table_input-1]
+        table_in_question.serve(table_input, order.order_id)
+        print(table_in_question.orders_per_table)
 
 
 def pay_bill():
     # pays for every order per table
-    order = Order()
-    table = Table()
-    
-    pay_table_input = int(input("what table is paying?"))
-    pay_table = tablers[pay_table_input-1].table_number
-    
-    print(table.orders_per_table)
-    pay_order_input = int(input("what order shall be paid off? "))
-    
-    
-    pay_table.free_table(pay_table_input)
-    
-    
-    
+
+    try:
+        pay_table_input = int(input("what table is paying? "))
+    except:
+        print("Not a valid input.")
+        return
+
+    pay_table = tablers[pay_table_input-1].taken
+    print(pay_table)
+
+    onhold = tablers[pay_table_input-1].orders_per_table
+    print(onhold)
+
+    if onhold ==[]:
+        choice = input("This table doesn't have any orders yet. Did you mean another table? ").lower()
+        if choice == "yes":
+            pay_bill()
+        if choice == "no":
+            return
+        else:
+            print("Not a valid input.")
+            return 
+    else:
+        pay_order_input = input("what order shall be paid off? ")
+        
+        if pay_order_input in onhold:
+            order_in_question = tablers[pay_table_input-1]
+            order_in_question.remove_order(pay_order_input)
+            print(f"Order {pay_order_input} has been paid off!")
+            if onhold == []:
+                tablers[pay_table_input-1].free_table()
+        else:
+            print("The Order is not in the list")
 
 
 # keeps the code running till fatal error occurs
