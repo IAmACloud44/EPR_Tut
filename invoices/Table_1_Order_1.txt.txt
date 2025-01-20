@@ -1,4 +1,0 @@
-Table: 1, Order Nr: 1
-PIZZA-HAWAII	10.0	2	
-ICE-TEA (PEACH)	4.0	1	no ice
-Sum EUR	24.0

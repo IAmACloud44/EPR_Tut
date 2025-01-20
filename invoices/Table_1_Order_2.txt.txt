@@ -1,2 +1,0 @@
-Table: 1, Order Nr: 2
-Sum EUR	0
