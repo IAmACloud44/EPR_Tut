@@ -48,26 +48,26 @@ class Database:
             return None
 
 
-'''TESTS'''
+# '''TESTS'''
 
-members = [('Mary_Brown', 'NqKX069L', 'admin'),
-           ('John_Elder', 'OnH139sp', 'officer'),
-           ('Wes_Smith', '850QuL96', 'member'),
-           ('Bob_Miller', '0ITF8cO2', 'member'),
-           ('Dan_White', 'tSh8c8j3', 'member'),
-           ('Tim_Smith', 'Yor4T4Z2', 'member'),
-           ('Joe_Black', 'fC584HGq', 'member'),
-           ('Laura_Lie', '3S2k5WYu', 'member'),
-           ('Rico_Salieri', 'c1jV1k4p', 'member'),
-           ('Anton_Kusnezow', '253DzRap', 'member')]
+# members = [('Mary_Brown', 'NqKX069L', 'admin'),
+#            ('John_Elder', 'OnH139sp', 'officer'),
+#            ('Wes_Smith', '850QuL96', 'member'),
+#            ('Bob_Miller', '0ITF8cO2', 'member'),
+#            ('Dan_White', 'tSh8c8j3', 'member'),
+#            ('Tim_Smith', 'Yor4T4Z2', 'member'),
+#            ('Joe_Black', 'fC584HGq', 'member'),
+#            ('Laura_Lie', '3S2k5WYu', 'member'),
+#            ('Rico_Salieri', 'c1jV1k4p', 'member'),
+#            ('Anton_Kusnezow', '253DzRap', 'member')]
 
-db = Database(sqlite3.connect('database.db'),
-              sqlite3.connect('database.db').cursor())
+# db = Database(sqlite3.connect('database.db'),
+#               sqlite3.connect('database.db').cursor())
 
-for i in members:
-    db.add_user(*i)
+# for i in members:
+#     db.add_user(*i)
 
-db.delete_user('8')
+# db.delete_user('8')
 
-print(db.get_user('Laura_Lie', '3S2k5WYu'))
-print(db.get_user('Joe_Black', 'fC584HGq'))
+# print(db.get_user('Laura_Lie', '3S2k5WYu'))
+# print(db.get_user('Joe_Black', 'fC584HGq'))

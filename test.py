@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from customtkinter import *
 from tkinter import messagebox
+from database import *
 
 signup_window = tk.Tk()
 signup_window.title("Cash Register App")
@@ -88,11 +89,8 @@ nameEntry.grid(row=1, column=0, padx=10, pady=(0,10))
 passwordEntry = CTkEntry(inputFrame,placeholder_text='Input Password', text_color='black',font=('Times New Roman', 10), height=30, width=480, fg_color='white', show='*')
 passwordEntry.grid(row=2, column=0, padx=10, pady=(0,10))
 
-buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=signup_user)
+buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=get_user)
 buttonSubmit.grid(row=3, column=0)
-
-
-
 
 
 signup_window.mainloop()
