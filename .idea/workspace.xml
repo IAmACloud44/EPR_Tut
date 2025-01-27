@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7737dd8-8dd2-46bb-a20a-7b4a4eddbced" name="Changes" comment="Completed class Menu according to the diagramm.">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +129,7 @@
       <workItem from="1737065883764" duration="162000" />
       <workItem from="1737974774187" duration="324000" />
       <workItem from="1737982935471" duration="60000" />
+      <workItem from="1737998797115" duration="449000" />
     </task>
     <task id="LOCAL-00001" summary="Completed class Menu according to the diagramm.">
       <option name="closed" value="true" />
