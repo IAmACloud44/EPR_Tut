@@ -1,43 +1,51 @@
 import sqlite3
 
-connection = sqlite3.connect('database.db')
-cursor = connection.cursor()
+class Database:
+    def __init__(self, connection, cursor):
 
-cursor.execute("CREATE TABLE IF NOT EXISTS users("
-               "id INTEGER PRIMARY KEY,"
-               "login TEXT,"
-               "password TEXT,"
-               "role TEXT)")
+        self.connection = connection
+        self.cursor = cursor
 
+        cursor.execute("CREATE TABLE IF NOT EXISTS users("
+                       "id INTEGER PRIMARY KEY,"
+                       "login TEXT,"
+                       "password TEXT,"
+                       "role TEXT)")
 
-def add_user(login, password, role):
-
-    cursor.execute("SELECT MAX(id) FROM users")
-    last_id = cursor.fetchone()[0]
-    id = last_id + 1 if last_id is not None else 1
-
-    cursor.execute("INSERT INTO users VALUES (?,?,?,?)",
-                   (id, login, password, role))
-    connection.commit()
+        cursor.execute("CREATE TABLE IF NOT EXISTS history("
+                       "department TEXT,"
+                       "operation TEXT,"
+                       "balance REAL)")
 
 
-def delete_user(id):
-    """
-    id should be given as a string! (It's just how it works...)
-    """
-    cursor.execute("DELETE FROM users WHERE rowid = (?)", id)
-    connection.commit()
+    def add_user(self, login, password, role):
+
+        self.cursor.execute("SELECT MAX(id) FROM users")
+        last_id = self.cursor.fetchone()[0]
+        id = last_id + 1 if last_id is not None else 1
+
+        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?)",
+                       (id, login, password, role))
+        self.connection.commit()
 
 
-def get_user(login, password):
+    def delete_user(self, id):
+        """
+        id should be given as a string! (It's just how it works...)
+        """
+        self.cursor.execute("DELETE FROM users WHERE rowid = (?)", id)
+        self.connection.commit()
 
-    try:
-        cursor.execute("""SELECT role FROM users WHERE login = (?) 
-                        AND password = (?)""", (login, password))
-        return cursor.fetchone()[0]
-    except TypeError:
-        print('Login or password is incorrect.')
-        return None
+
+    def get_user(self, login, password):
+
+        try:
+            self.cursor.execute("""SELECT role FROM users WHERE login = (?) 
+                            AND password = (?)""", (login, password))
+            return self.cursor.fetchone()[0]
+        except TypeError:
+            print('Login or password is incorrect.')
+            return None
 
 
 '''TESTS'''
@@ -53,10 +61,13 @@ members = [('Mary_Brown', 'NqKX069L', 'admin'),
            ('Rico_Salieri', 'c1jV1k4p', 'member'),
            ('Anton_Kusnezow', '253DzRap', 'member')]
 
+db = Database(sqlite3.connect('database.db'),
+              sqlite3.connect('database.db').cursor())
+
 for i in members:
-    add_user(*i)
+    db.add_user(*i)
 
-delete_user('8')
+db.delete_user('8')
 
-print(get_user('Laura_Lie', '3S2k5WYu'))
-print(get_user('Joe_Black', 'fC584HGq'))
+print(db.get_user('Laura_Lie', '3S2k5WYu'))
+print(db.get_user('Joe_Black', 'fC584HGq'))
