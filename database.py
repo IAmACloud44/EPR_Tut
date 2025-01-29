@@ -196,6 +196,8 @@ members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
 for i in members:
     db.add_user(*i)
 
+db.add_user('Lera_Kolos', 'A94bsd7e', 'member', 'football')
+
 db.delete_user('8')
 
 db.assign_treasurer('3', 'football')
