@@ -1,0 +1,21 @@
+treasurers can
+- make withdrawals and transfers
+- view transaction history
+Dan_White
+tSh8c8j3
+
+admins can 
+- add clubs
+- print statements
+Mary_Brown
+NqKX069L
+
+finance officers can
+- view status of accounts
+- view status overall
+
+users can
+- log in
+- be redirected??
+Rico_Salieri
+c1jV1k4p

@@ -1,0 +1,9 @@
+department,operation,balance
+football,deposit of 100 € was made,100.0
+hiking,deposit of 50 € was made,50.0
+hiking,deposit of 25 € was made,75.0
+football,withdraw of 20 € was made,80.0
+football,deposit of 500 € was made,580.0
+hiking,withdraw of 75 € was made,0.0
+football,transfer 150 € to hiking department,430.0
+hiking,receive 150 € from football department,150.0
