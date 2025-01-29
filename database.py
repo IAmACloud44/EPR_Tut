@@ -163,39 +163,3 @@ class Database:
             writer = csv.writer(transactions_file)
             writer.writerow(columns)
             writer.writerows(info)
-
-
-
-'''ЁБАНЫЕ ТЕСТЫ'''
-
-
-
-db = Database(sqlite3.connect('database.db'),
-              sqlite3.connect('database.db').cursor())
-
-db.make_deposit('football', 100)
-db.make_deposit('hiking', 50)
-db.make_deposit('hiking', 25)
-db.make_withdraw('football', 20)
-db.make_deposit('football', 500)
-db.make_withdraw('hiking', 75)
-db.make_withdraw('hiking', 25)
-db.transfer(150, 'football', 'hiking')
-
-members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
-           ('John_Elder', 'OnH139sp', 'finofficer', 'club'),
-           ('Wes_Smith', '850QuL96', 'treasurer', 'football'),
-           ('Bob_Miller', '0ITF8cO2', 'user', 'football'),
-           ('Dan_White', 'tSh8c8j3', 'treasurer', 'hiking'),
-           ('Tim_Smith', 'Yor4T4Z2', 'user', 'hiking'),
-           ('Joe_Black', 'fC584HGq', 'user', 'football'),
-           ('Laura_Lie', '3S2k5WYu', 'user', 'hiking'),
-           ('Rico_Salieri', 'c1jV1k4p', 'user', 'football'),
-           ('Anton_Kusnezow', '253DzRap', 'user', 'hiking')]
-
-for i in members:
-    db.add_user(*i)
-
-db.assign_treasurer('3', 'football')
-
-db.save_status()

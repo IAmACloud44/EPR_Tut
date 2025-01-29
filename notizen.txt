@@ -1,12 +1,15 @@
 treasurers can
-- make withdrawals and transfers
+- make deposits
+- make withdrawals
+- transfer money to other accounts
 - view transaction history
 Dan_White
 tSh8c8j3
 
 admins can 
-- add clubs
-- print statements
+- assign accounts
+- create club accounts
+- save current status in csv
 Mary_Brown
 NqKX069L
 

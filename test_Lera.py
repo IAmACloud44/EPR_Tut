@@ -2,9 +2,8 @@ import tkinter as tk
 from customtkinter import *
 from PIL import Image
 from tkinter import messagebox
-from database import Database
+from database import *
 from teamwork import *
-import sqlite3
 import csv
 
 # # The window set ups
@@ -85,15 +84,13 @@ def login_page():
 def admin_addition():
     '''adds the functions that admins can do to the menu'''
     global adminFrame
-    connection = sqlite3.connect('database.db')
-    cursor = connection.cursor()
     
     adminFrame = CTkFrame(menuFrame, fg_color='white')
     adminFrame.grid(row=3, column=0, pady=20, columnspan=2)
     
     addClub = CTkButton(adminFrame, text='Add a Club', width=210, cursor='hand2', command=add_club)
     addClub.grid(row=0, column=0, pady=(20,0), padx=20)
-    printStat = CTkButton(adminFrame, text='Print Statement', width=210, cursor='hand2', command=lambda: Database.save_status(cursor))
+    printStat = CTkButton(adminFrame, text='Print Statement', width=210, cursor='hand2')
     printStat.grid(row=0, column=1, pady=(20,0), padx=20)
     
 
@@ -140,8 +137,64 @@ def user_page():
 
 
 # # The functionalities in the windows
+def check_role():
+    '''reads the role and department of the person logged in and directs them to their individual page'''
+    
+    role, department = login_check(csv_file = 'users.csv')
+    #user page
+    if role == 'user':
+        user_page()
+    # treasurer page
+    if role == 'treasurer':
+        menu()
+        treas_addition()
+    # financial officer page
+    if role == 'finofficer':
+        menu()
+        admin_addition()
+    # admin page
+    if role == 'admin':
+        menu()
+        admin_addition()
+
+    return department
+
+
+def login_check(csv_file):
+    '''Checks the login data, whether the person loging in is in the list or not'''
+    with open(csv_file, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)
+
+        for row in reader:
+            if len(row)<5:
+                continue
+            if row[1] == nameEntry.get() and row[2] == passwordEntry.get():
+                return row[3], row[4]
+    return False
+
+
 def login():
-    '''Logs the user in, reads the role and department of the person logged in and directs them to their individual page'''
+    '''The function of the 'submit button', it checks what is in the input bubbles and:
+    - rejects non filled bubbles
+    - verifies the login data and lets people into the menu OR
+    - tell you that you did a mistake
+    '''
+
+    csv_file = 'users.csv'
+
+    # Empty bubble checks
+    if nameEntry.get() == '' or passwordEntry.get() == '':
+        messagebox.showerror('Alert', 'Fill in both inputs.')
+    # actual login check    
+    elif login_check(csv_file):
+        check_role()
+    # tells you that you did a mistake
+    else:
+        messagebox.showerror('Alert', 'Wrong Login or Password')
+
+def login_LERA():
+
     if nameEntry.get() == '' or passwordEntry.get() == '':
         messagebox.showerror('Alert', 'Fill in both inputs.')
 
@@ -150,23 +203,7 @@ def login():
         if user is None:
             messagebox.showerror('No such user',
                                  'Login or password is incorrect.')
-        else: 
-            messagebox.showinfo('Success',f"You've been logged in as {user}")
-            if user == 'user':
-                user_page()
-            # treasurer page
-            if user == 'treasurer':
-                menu()
-                treas_addition()
-            # financial officer page
-            if user == 'finofficer':
-                menu()
-                admin_addition()
-            # admin page
-            if user == 'admin':
-                menu()
-                admin_addition()
-            
+        else: messagebox.showinfo(f"You've been logged in as {user}")
 
 def toobad():
     '''Pop up for the forget password option'''
@@ -227,20 +264,19 @@ def add_club_button():
     except:
         messagebox.showerror('Alert', 'This is not a monetary sum')
     
-
 db = Database(sqlite3.connect('database.db'),
               sqlite3.connect('database.db').cursor())
 
 members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
-           ('John_Elder', 'OnH139sp', 'finofficer', 'club'),
-           ('Wes_Smith', '850QuL96', 'treasurer', 'football'),
-           ('Bob_Miller', '0ITF8cO2', 'user', 'football'),
-           ('Dan_White', 'tSh8c8j3', 'treasurer', 'hiking'),
-           ('Tim_Smith', 'Yor4T4Z2', 'user', 'hiking'),
-           ('Joe_Black', 'fC584HGq', 'user', 'football'),
-           ('Laura_Lie', '3S2k5WYu', 'user', 'hiking'),
-           ('Rico_Salieri', 'c1jV1k4p', 'user', 'football'),
-           ('Anton_Kusnezow', '253DzRap', 'user', 'hiking')]
+           ('John_Elder', 'OnH139sp', 'officer', 'club'),
+           ('Wes_Smith', '850QuL96', 'member', 'football'),
+           ('Bob_Miller', '0ITF8cO2', 'member', 'football'),
+           ('Dan_White', 'tSh8c8j3', 'member', 'hiking'),
+           ('Tim_Smith', 'Yor4T4Z2', 'member', 'hiking'),
+           ('Joe_Black', 'fC584HGq', 'member', 'football'),
+           ('Laura_Lie', '3S2k5WYu', 'member', 'hiking'),
+           ('Rico_Salieri', 'c1jV1k4p', 'member', 'football'),
+           ('Anton_Kusnezow', '253DzRap', 'member', 'hiking')]
 
 for i in members:
     db.add_user(*i)
@@ -279,8 +315,9 @@ forgot_label = CTkButton(inputFrame, text='Forgot Password?', width=180, cursor=
 forgot_label.grid(row=3, column=0, sticky='e')
 
 # Button to Submit whatever is in the name or password bubbles
-buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=login)
+buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=login_LERA)
 buttonSubmit.grid(row=4, column=0)
 
 # keeps the window open for as long as it is not exited out of
 signup_window.mainloop()
+
