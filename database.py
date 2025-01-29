@@ -183,20 +183,18 @@ db.make_withdraw('hiking', 25)
 db.transfer(150, 'football', 'hiking')
 
 members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
-           ('John_Elder', 'OnH139sp', 'officer', 'club'),
-           ('Wes_Smith', '850QuL96', 'member', 'football'),
-           ('Bob_Miller', '0ITF8cO2', 'member', 'football'),
-           ('Dan_White', 'tSh8c8j3', 'member', 'hiking'),
-           ('Tim_Smith', 'Yor4T4Z2', 'member', 'hiking'),
-           ('Joe_Black', 'fC584HGq', 'member', 'football'),
-           ('Laura_Lie', '3S2k5WYu', 'member', 'hiking'),
-           ('Rico_Salieri', 'c1jV1k4p', 'member', 'football'),
-           ('Anton_Kusnezow', '253DzRap', 'member', 'hiking')]
+           ('John_Elder', 'OnH139sp', 'finofficer', 'club'),
+           ('Wes_Smith', '850QuL96', 'treasurer', 'football'),
+           ('Bob_Miller', '0ITF8cO2', 'user', 'football'),
+           ('Dan_White', 'tSh8c8j3', 'treasurer', 'hiking'),
+           ('Tim_Smith', 'Yor4T4Z2', 'user', 'hiking'),
+           ('Joe_Black', 'fC584HGq', 'user', 'football'),
+           ('Laura_Lie', '3S2k5WYu', 'user', 'hiking'),
+           ('Rico_Salieri', 'c1jV1k4p', 'user', 'football'),
+           ('Anton_Kusnezow', '253DzRap', 'user', 'hiking')]
 
 for i in members:
     db.add_user(*i)
-
-db.delete_user('8')
 
 db.assign_treasurer('3', 'football')
 

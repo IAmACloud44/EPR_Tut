@@ -43,14 +43,16 @@ class Treasurer(Account):
         recipient.history += [f"{money} € were received from another "
                               f"department."]
 
-# baseball = Account('baseball', 1000)
-# hiking = Account("hiking", 1500)
-# Lena = Treasurer(baseball)
-# Peter = Treasurer(hiking)
+baseball = Account('baseball', 1000)
+hiking = Account("hiking", 1500)
+Lena = Treasurer(baseball)
+Peter = Treasurer(hiking)
 
-# Peter.transfer(250, baseball)
+print(baseball.balance, hiking.balance)
+Peter.transfer(250, baseball)
 
-# print(baseball.balance, hiking.balance)
+print(baseball.balance, hiking.balance)
 
-# Peter.make_withdraw(2000)
+Peter.make_withdraw(100)
+print(baseball.balance, hiking.balance)
 
