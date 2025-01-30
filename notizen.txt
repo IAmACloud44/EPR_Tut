@@ -1,24 +1,27 @@
-treasurers can
-- make deposits
-- make withdrawals
-- transfer money to other accounts
-- view transaction history
-Dan_White
-tSh8c8j3
-
 admins can 
-- assign accounts
-- create club accounts
-- save current status in csv
++ assign accounts (add user and change status)
++ create club accounts (add a club)
++ update club member's info (update member)
+- save current status in csv (only as a statement of users, not overall stuff)
 Mary_Brown
 NqKX069L
 
+treasurers can
+- make deposits (done with withdrawals, cannot access the balance)
+- make withdrawals (done with deposits, cannot access the balance)
+- transfer money to other accounts ()
+- view transaction history (cannot be tested as no access to balance)
+Dan_White
+tSh8c8j3
+
 finance officers can
-- view status of account
-- view status overall
+- view status of account 
+- view status overall (print statement like admins, will double it)
+John_Elder
+OnH139sp
 
 users can
-- log in
-- be redirected??
+- log in (done)
+- be redirected?? (done)
 Rico_Salieri
 c1jV1k4p
