@@ -193,6 +193,17 @@ def login():
     else:
         messagebox.showerror('Alert', 'Wrong Login or Password')
 
+def login_LERA():
+
+    if nameEntry.get() == '' or passwordEntry.get() == '':
+        messagebox.showerror('Alert', 'Fill in both inputs.')
+
+    else:
+        user = db.get_user(nameEntry.get(), passwordEntry.get())
+        if user is None:
+            messagebox.showerror('No such user',
+                                 'Login or password is incorrect.')
+        else: messagebox.showinfo(f"You've been logged in as {user}")
 
 def toobad():
     '''Pop up for the forget password option'''
@@ -253,7 +264,22 @@ def add_club_button():
     except:
         messagebox.showerror('Alert', 'This is not a monetary sum')
     
+db = Database(sqlite3.connect('database.db'),
+              sqlite3.connect('database.db').cursor())
 
+members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
+           ('John_Elder', 'OnH139sp', 'officer', 'club'),
+           ('Wes_Smith', '850QuL96', 'member', 'football'),
+           ('Bob_Miller', '0ITF8cO2', 'member', 'football'),
+           ('Dan_White', 'tSh8c8j3', 'member', 'hiking'),
+           ('Tim_Smith', 'Yor4T4Z2', 'member', 'hiking'),
+           ('Joe_Black', 'fC584HGq', 'member', 'football'),
+           ('Laura_Lie', '3S2k5WYu', 'member', 'hiking'),
+           ('Rico_Salieri', 'c1jV1k4p', 'member', 'football'),
+           ('Anton_Kusnezow', '253DzRap', 'member', 'hiking')]
+
+for i in members:
+    db.add_user(*i)
 
 
 # # Page of the login
@@ -289,8 +315,9 @@ forgot_label = CTkButton(inputFrame, text='Forgot Password?', width=180, cursor=
 forgot_label.grid(row=3, column=0, sticky='e')
 
 # Button to Submit whatever is in the name or password bubbles
-buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=login)
+buttonSubmit = CTkButton(inputFrame, text='Confirm', width=380, cursor='hand2', command=login_LERA)
 buttonSubmit.grid(row=4, column=0)
 
 # keeps the window open for as long as it is not exited out of
 signup_window.mainloop()
+
