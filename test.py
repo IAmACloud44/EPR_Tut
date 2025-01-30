@@ -725,15 +725,15 @@ def view_stat():
 db = Database(sqlite3.connect('database.db'),
               sqlite3.connect('database.db').cursor())
 
-members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
-           ('John_Elder', 'OnH139sp', 'finofficer', 'club'),
-           ('Wes_Smith', '850QuL96', 'treasurer', 'football'),
-           ('Bob_Miller', '0ITF8cO2', 'user', 'football'),
-           ('Dan_White', 'tSh8c8j3', 'treasurer', 'hiking'),
-           ('Tim_Smith', 'Yor4T4Z2', 'user', 'hiking'),
-           ('Joe_Black', 'fC584HGq', 'user', 'football'),
-           ('Laura_Lie', '3S2k5WYu', 'user', 'hiking'),
-           ('Rico_Salieri', 'c1jV1k4p', 'user', 'football'),
+members = [('Ensign_Twiva', 'NqKX069L', 'admin', 'club'),
+           ('Beckett_Mariner', 'OnH139sp', 'finofficer', 'club'),
+           ('Wes_Crusher', '850QuL96', 'treasurer', 'football'),
+           ('Sam_Rutherford', '0ITF8cO2', 'user', 'football'),
+           ('Jack_Ransom', 'tSh8c8j3', 'treasurer', 'hiking'),
+           ('Dvana_Tendi', 'Yor4T4Z2', 'user', 'hiking'),
+           ('Leutenant_Castro', 'fC584HGq', 'user', 'football'),
+           ('Mo_Opsy', '3S2k5WYu', 'user', 'hiking'),
+           ('Bradward_Boimler', 'c1jV1k4p', 'user', 'football'),
            ('Anton_Kusnezow', '253DzRap', 'user', 'hiking')]
 
 for i in members:

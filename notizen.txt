@@ -3,7 +3,7 @@ admins can
 + create club accounts (add a club)
 + update club member's info (update member)
 + remove club member (remove)
-- save current status in csv (only as a statement of users, not overall stuff)
++ save current status in csv (only as a statement of users, not overall stuff)
 Mary_Brown
 NqKX069L
 
@@ -16,8 +16,8 @@ Dan_White
 tSh8c8j3
 
 finance officers can
-- view status of account 
-- view status overall (print statement like admins, will double it)
++ view status of account 
++ view status overall (print statement like admins, will double it)
 John_Elder
 OnH139sp
 
