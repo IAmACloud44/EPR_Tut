@@ -10,7 +10,7 @@ NqKX069L
 treasurers can
 + make deposits (done with withdrawals)
 + make withdrawals (done with deposits)
-- transfer money to other accounts ()
++ transfer money to other accounts (even to oneself)
 + view transaction history (AAAAAAAAAAAe)
 Dan_White
 tSh8c8j3

@@ -1,5 +1,5 @@
-import sqlite3
 import csv
+
 
 class Database:
 
@@ -20,24 +20,21 @@ class Database:
                        "operation TEXT,"
                        "balance REAL)")
 
-
     def add_user(self, login, password, role, department):
-
         self.cursor.execute("SELECT MAX(id) FROM users")
         last_id = self.cursor.fetchone()[0]
         id = last_id + 1 if last_id is not None else 1
 
         self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)",
-                       (id, login, password, role, department))
+                            (id, login, password, role, department))
         self.connection.commit()
 
     def update_user(self, login, password, role, department):
-        
-        self.cursor.execute("""UPDATE users SET department = ?, role = ? 
-                            WHERE login = ? AND password = ?""", 
+
+        self.cursor.execute("""UPDATE users SET department = ?, role = ?
+                             WHERE login = ? AND password = ?""",
                             (department, role, login, password))
         self.connection.commit()
-
 
     def delete_user(self, id):
         """
@@ -46,26 +43,24 @@ class Database:
         self.cursor.execute("DELETE FROM users WHERE rowid = (?)", (id,))
         self.connection.commit()
 
-
     def get_user(self, login, password):
 
         try:
-            self.cursor.execute("""SELECT role FROM users WHERE login = (?) 
+            self.cursor.execute("""SELECT role FROM users WHERE login = (?)
                                 AND password = (?)""", (login, password))
             return self.cursor.fetchone()[0]
         except TypeError:
             return None
 
-
     def all_departments(self):
         self.cursor.execute("""SELECT department FROM users""")
         departments = self.cursor.fetchall()
 
-        # Convert list of tuples to a set to remove duplicates, then back to a sorted list
+        # Convert list of tuples to a set to remove duplicates,
+        # then back to a sorted list
         unique_departments = sorted(set(dept[0] for dept in departments))
 
         return unique_departments
-
 
     def department_members(self, department):
 
@@ -74,26 +69,26 @@ class Database:
 
         return self.cursor.fetchall()
 
-
     def get_id(self, login):
-        
-        self.cursor.execute("""SELECT id FROM users WHERE login = (?)""", (login,))
-        
-        return self.cursor.fetchall()
 
+        self.cursor.execute("""SELECT id FROM users WHERE login = (?)""",
+                            (login,))
+
+        return self.cursor.fetchall()
 
     def get_department(self, login):
-        
-        self.cursor.execute("""SELECT department FROM users WHERE login = (?)""", (login,))
-        
+
+        self.cursor.execute("""SELECT department FROM users WHERE login
+                             = (?)""", (login,))
+
         return self.cursor.fetchall()
-        
 
     def assign_treasurer(self, id, department):
 
         in_department = False
         for i in self.department_members(department):
-            if i[0] == int(id): in_department = True
+            if i[0] == int(id):
+                in_department = True
 
         if in_department is False:
             return None
@@ -101,19 +96,16 @@ class Database:
             self.cursor.execute("""UPDATE users SET role = 'treasurer'
                                     WHERE id = (?)""", (id,))
             self.connection.commit()
-    
 
     def update_department(self, login, department):
         self.cursor.execute("""UPDATE users SET department = ?
                             WHERE login = ?""", (department, login))
         self.connection.commit()
 
-
     def update_role(self, login, role, department):
         self.cursor.execute("""UPDATE users SET department = ? AND role = ?
                             WHERE login = ?""", (department, role, login))
         self.connection.commit()
-
 
     def make_deposit(self, department, money):
 
@@ -129,7 +121,6 @@ class Database:
                             (department, operation, balance))
         self.connection.commit()
 
-
     def make_withdraw(self, department, money):
 
         self.cursor.execute("""SELECT balance FROM transactions
@@ -139,14 +130,14 @@ class Database:
         status = self.cursor.fetchone()
         if status is None or status[0] < money:
             return None
-        else: balance = status[0] - money
+        else:
+            balance = status[0] - money
         operation = f"withdraw of {money} € was made"
 
         self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                             (department, operation, balance))
         self.connection.commit()
         return balance
-
 
     def transfer(self, money, donor, recipient):
 
@@ -156,7 +147,6 @@ class Database:
 
         status = self.cursor.fetchone()
         if status is None or status[0] < money:
-            print('Not enough money in the account.')
             return None
         else:
             donor_balance = status[0] - money
@@ -168,13 +158,14 @@ class Database:
                                 WHERE department = (?)
                                 ORDER BY rowid DESC LIMIT 1""", (recipient,))
             status = self.cursor.fetchone()
-            if status is None: recipient_balance = money
-            else: recipient_balance = status[0] + money
+            if status is None:
+                recipient_balance = money
+            else:
+                recipient_balance = status[0] + money
             operation = (f"receive {money} € from {donor} department")
             self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                                 (recipient, operation, recipient_balance))
             self.connection.commit()
-
 
     def view_history(self, department='club'):
 
@@ -187,7 +178,6 @@ class Database:
         self.connection.commit()
         return self.cursor.fetchall()
 
-
     def save_data(self):
 
         self.cursor.execute("""SELECT * FROM users""")
@@ -198,7 +188,7 @@ class Database:
             writer = csv.writer(users_file)
             writer.writerow(columns)
             writer.writerows(info)
-    
+
     def save_transactions(self):
 
         self.cursor.execute("""SELECT * FROM transactions""")
@@ -209,3 +199,45 @@ class Database:
             writer = csv.writer(transactions_file)
             writer.writerow(columns)
             writer.writerows(info)
+
+    def current_balance(self, department):
+
+        self.cursor.execute("""SELECT balance FROM transactions
+                            WHERE department = (?)
+                            ORDER BY rowid DESC LIMIT 1""",
+                            (department,))
+
+        status = self.cursor.fetchone()
+
+        if status is None:
+            return
+
+        info = status[0]
+        columns = ['department', 'balance']
+        path = f"./current_balance_{department}.csv"
+        with open(path, 'w', newline='') as transactions_file:
+            writer = csv.writer(transactions_file)
+            writer.writerow(columns)
+            writer.writerow([department, info])
+
+    def full_balance(self):
+
+        self.cursor.execute("""SELECT department, balance 
+                            FROM transactions 
+                            WHERE rowid IN (
+                                SELECT MAX(rowid) FROM transactions 
+                                GROUP BY department
+                            )
+                        """)
+        results = self.cursor.fetchall()
+
+        if not results:
+            return
+
+        columns = ['department', 'balance']
+        path = "./all_departments_balance.csv"
+
+        with open(path, 'w', newline='') as transactions_file:
+            writer = csv.writer(transactions_file)
+            writer.writerow(columns)
+            writer.writerows(results)
