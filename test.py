@@ -15,7 +15,52 @@ signup_window.geometry('500x400+300+100')
 signup_window.configure(background = 'white')
 
 
-# # The window part fucntions
+# # THE WINDOWS
+# LOGINPAGE
+def login():
+    '''Logs the user in, reads the role and department of the person logged in and directs them to their individual page'''
+    if nameEntry.get() == '' or passwordEntry.get() == '':
+        messagebox.showerror('Alert', 'Fill in both inputs.')
+
+    else:
+        user = db.get_user(nameEntry.get(), passwordEntry.get())
+        if user is None:
+            messagebox.showerror('No such user',
+                                 'Login or password is incorrect.')
+        else: 
+            messagebox.showinfo('Success',f"You've been logged in as {user}")
+            if user == 'user':
+                user_page()
+            # treasurer page
+            if user == 'treasurer':
+                menu()
+                treas_addition()
+            # financial officer page
+            if user == 'finofficer':
+                menu()
+                admin_addition()
+            # admin page
+            if user == 'admin':
+                menu()
+                admin_addition()
+
+def login_page():
+    '''Loads in the login page upon loging out'''
+    for widget in signup_window.winfo_children():  # Get all widgets in the window
+        if isinstance(widget, CTkFrame):  # Check if it's a Frame
+            widget.grid_forget()
+
+    loginFrame.grid(row=0, column=0, sticky='nsew') # reframes and makes the login page appear
+
+    nameEntry.delete(0, "end")  # Clears the name in the login
+    passwordEntry.delete(0, "end")  # Clears the password in the login
+        
+
+def toobad():
+    '''Pop up for the forget password option'''
+    messagebox.showerror('LMAO', 'too bad')
+
+# QUIT AND LOGOUT
 def quit_logout():
     '''A custom Quit button next to a LogOut button to put underneath all other windows but the login'''
     
@@ -38,7 +83,7 @@ def quit_logout():
                        command=login_page)
     buttonLouOut.grid(row=0, column=1, pady=(20,0), sticky='s')
 
-
+# MENU PARTS
 def menu():
     '''
     Function to create the choice of what Clubs to manage
@@ -70,31 +115,19 @@ def menu():
     quit_logout()
 
 
-def login_page():
-    '''Loads in the login page upon loging out'''
-    for widget in signup_window.winfo_children():  # Get all widgets in the window
-        if isinstance(widget, CTkFrame):  # Check if it's a Frame
-            widget.grid_forget()
-
-    loginFrame.grid(row=0, column=0, sticky='nsew') # reframes and makes the login page appear
-
-    nameEntry.delete(0, "end")  # Clears the name in the login
-    passwordEntry.delete(0, "end")  # Clears the password in the login
-
-
 def admin_addition():
     '''adds the functions that admins can do to the menu'''
     global adminFrame
-    connection = sqlite3.connect('database.db')
-    cursor = connection.cursor()
     
     adminFrame = CTkFrame(menuFrame, fg_color='white')
     adminFrame.grid(row=3, column=0, pady=20, columnspan=2)
     
     addClub = CTkButton(adminFrame, text='Add a Club', width=210, cursor='hand2', command=add_club)
     addClub.grid(row=0, column=0, pady=(20,0), padx=20)
-    printStat = CTkButton(adminFrame, text='Print Statement', width=210, cursor='hand2', command=lambda: Database.save_status(cursor))
+    printStat = CTkButton(adminFrame, text='Print Statement', width=210, cursor='hand2', command=lambda: db.save_status())
     printStat.grid(row=0, column=1, pady=(20,0), padx=20)
+    addUser = CTkButton(adminFrame, text='Add User', width=210, cursor='hand2', command=add_user)
+    addUser.grid(row=1, column=0, pady=(20,0), padx=20)
     
 
 def treas_addition():
@@ -137,46 +170,38 @@ def user_page():
 
     # quit and logout buttons are added
     quit_logout()
-
-
-# # The functionalities in the windows
-def login():
-    '''Logs the user in, reads the role and department of the person logged in and directs them to their individual page'''
-    if nameEntry.get() == '' or passwordEntry.get() == '':
-        messagebox.showerror('Alert', 'Fill in both inputs.')
-
-    else:
-        user = db.get_user(nameEntry.get(), passwordEntry.get())
-        if user is None:
-            messagebox.showerror('No such user',
-                                 'Login or password is incorrect.')
-        else: 
-            messagebox.showinfo('Success',f"You've been logged in as {user}")
-            if user == 'user':
-                user_page()
-            # treasurer page
-            if user == 'treasurer':
-                menu()
-                treas_addition()
-            # financial officer page
-            if user == 'finofficer':
-                menu()
-                admin_addition()
-            # admin page
-            if user == 'admin':
-                menu()
-                admin_addition()
-            
-
-def toobad():
-    '''Pop up for the forget password option'''
-    messagebox.showerror('LMAO', 'too bad')
     
 
+# # ADMIN POWERS
 def add_club():
+    '''A function to add a new club, assigning a person to be a treasurer'''
+
     global addFrame
     global clubinput
     global moneyinput
+    
+    def submit_form():
+        # actually turns the inputs into a new member
+        try:
+            club = clubinput.get()
+            money = int(moneyinput.get())
+            login = treasurerinput.get()
+        except:
+            messagebox.showerror("Input Error", "Please put in valid inputs")
+            return
+
+        # Validation
+        if login == '' or  club == '' or money == '':
+            messagebox.showerror("Input Error", "Please fill in all fields!")
+            return
+
+        # Call the add_user function to add the user
+        id = db.get_id(login)[0][0]
+        print(id)
+        department = db.get_department(login)[0][0]
+        print(department)
+        db.assign_treasurer(id, department)
+        Account(club, money)
 
     for widget in signup_window.winfo_children():
         if isinstance(widget, CTkFrame):
@@ -197,36 +222,65 @@ def add_club():
     moneyinput = CTkEntry(addFrame, fg_color='white', width=200, text_color='black')
     moneyinput.grid(row=1, column=1)
     
+    treasurerinputLabel = CTkLabel(addFrame, text='Input a Name for the member in charge:', text_color='black', width=200)
+    treasurerinputLabel.grid(row=2, column=0, pady=20, padx=20, sticky='w')
+    treasurerinput = CTkEntry(addFrame, fg_color='white', width=200, text_color='black')
+    treasurerinput.grid(row=2, column=1)
+    
     # Button to Submit whatever is in the name or password bubbles
-    buttonSubmit = CTkButton(addFrame, text='Submit', width=150, cursor='hand2', command=add_club_button)
+    buttonSubmit = CTkButton(addFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
     buttonSubmit.grid(row=4, column=1, columnspan = 2, sticky='e')
     buttonBack = CTkButton(addFrame, text='Back', width=150, cursor='hand2', command=lambda: (menu(), admin_addition()))
     buttonBack.grid(row=4, column=0, columnspan = 2, sticky='w', padx=20)
     
 
-def add_club_button():
-    club = clubinput.get()
-    try:
-        money = int(moneyinput.get())
-        money = float(moneyinput.get())
-        print(money)
-    except:
-        messagebox.showerror('Alert', 'Invalid Input')
-    if money < 0 or money < 0.0:
-        messagebox.showerror('Alert', f'Don\'t take up loans you cannot pay')
-        return
-    try:
-        if club == '' or money == '':
-            messagebox.showerror('Alert', 'Please fill in all bubbles')
-        else:
-            club = Account(club, int(money))
-            print(club.balance)
-            messagebox.showinfo('Success', f'Successfully created {clubinput.get()}')
-            moneyinput.delete(0, "end")  # Clears the name in the login
-            clubinput.delete(0, "end")  # Clears the password in the login
-    except:
-        messagebox.showerror('Alert', 'This is not a monetary sum')
+def add_user():
+    '''Adding new members as users'''
+    def submit_form():
+        # actually turns the inputs into a new member
+        login = memberinput.get()
+        password = passwordinput.get()
+        role = 'user'
+        department = departmentinput.get()
+        
+        # Validation
+        if login == '' or  password == '' or department == '':
+            messagebox.showerror("Input Error", "Please fill in all fields!")
+            return
+
+        # Call the add_user function to add the user
+        db.add_user(login, password, role, department)
+    # deletes all frames from before
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+    # load in the quit and logout buttons
+    quit_logout()
+    # load in the actual frame
+    adduserFrame = CTkFrame(signup_window, fg_color='white', width=500)
+    adduserFrame.grid(row=0, column=0)
+    # member input
+    memberinputLabel = CTkLabel(adduserFrame, text='Input a login name for the new member:', text_color='black', width=200)
+    memberinputLabel.grid(row=0, column=0, pady=20, padx=20, sticky='w')
+    memberinput = CTkEntry(adduserFrame, fg_color='white', width=200, text_color='black')
+    memberinput.grid(row=0, column=1)
+    # password input
+    passwordinputLabel = CTkLabel(adduserFrame, text='Input a password for the new member:', text_color='black', width=200)
+    passwordinputLabel.grid(row=1, column=0, pady=20, padx=20, sticky='w')
+    passwordinput = CTkEntry(adduserFrame, fg_color='white', width=200, text_color='black')
+    passwordinput.grid(row=1, column=1)
     
+    departmentinputLabel = CTkLabel(adduserFrame, text='Input a club for the member:', text_color='black', width=200)
+    departmentinputLabel.grid(row=2, column=0, pady=20, padx=20, sticky='w')
+    departmentinput = CTkEntry(adduserFrame, fg_color='white', width=200, text_color='black')
+    departmentinput.grid(row=2, column=1)
+    
+    # Button to Submit whatever is in the name or password bubbles
+    buttonSubmit = CTkButton(adduserFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
+    buttonSubmit.grid(row=4, column=1, columnspan = 2, sticky='e')
+    buttonBack = CTkButton(adduserFrame, text='Back', width=150, cursor='hand2', command=lambda: (menu(), admin_addition()))
+    buttonBack.grid(row=4, column=0, columnspan = 2, sticky='w', padx=20)
+
 
 db = Database(sqlite3.connect('database.db'),
               sqlite3.connect('database.db').cursor())

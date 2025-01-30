@@ -14,7 +14,7 @@ Mary_Brown
 NqKX069L
 
 finance officers can
-- view status of accounts
+- view status of account
 - view status overall
 
 users can

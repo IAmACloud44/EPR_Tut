@@ -47,7 +47,6 @@ class Database:
                                 AND password = (?)""", (login, password))
             return self.cursor.fetchone()[0]
         except TypeError:
-            print('Login or password is incorrect.')
             return None
 
 
@@ -57,7 +56,20 @@ class Database:
                             WHERE department = (?)""", (department,))
 
         return self.cursor.fetchall()
+    
+    def get_id(self, login):
+        
+        self.cursor.execute("""SELECT id FROM users WHERE login = (?)""", (login,))
+        
+        return self.cursor.fetchall()
 
+
+    def get_department(self, login):
+        
+        self.cursor.execute("""SELECT department FROM users WHERE login = (?)""", (login,))
+        
+        return self.cursor.fetchall()
+        
 
     def assign_treasurer(self, id, department):
 
