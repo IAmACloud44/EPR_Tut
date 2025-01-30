@@ -138,7 +138,6 @@ class Database:
 
         status = self.cursor.fetchone()
         if status is None or status[0] < money:
-            print('Not enough money in the account.')
             return None
         else: balance = status[0] - money
         operation = f"withdraw of {money} € was made"
@@ -146,6 +145,7 @@ class Database:
         self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                             (department, operation, balance))
         self.connection.commit()
+        return balance
 
 
     def transfer(self, money, donor, recipient):

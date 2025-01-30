@@ -82,76 +82,6 @@ def quit_logout():
     buttonLouOut.grid(row=0, column=1, pady=(20,0), sticky='s')
 
 
-# # THE MENUS
-def admin_page():
-    '''adds the functions that admins can do'''
-    global adminFrame
-    
-    for widget in signup_window.winfo_children():
-        if isinstance(widget, CTkFrame):
-            widget.grid_forget()
-    
-    adminFrame = CTkFrame(signup_window, fg_color='white')
-    adminFrame.grid(row=0, column=0, pady=20, columnspan=2)
-    
-    admin_label = tk.Label(adminFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
-    admin_label.grid(row=0, column=0, pady=(20,0), columnspan=2)    
-    
-    addClub = CTkButton(adminFrame, text='Add a Club', width=210, cursor='hand2', command=add_club)
-    addClub.grid(row=1, column=0, pady=(20,0), padx=20)
-    printStat = CTkButton(adminFrame, text='Print Statement', width=210, cursor='hand2', command=db.save_data) #command=db.department_balances)
-    printStat.grid(row=1, column=1, pady=(20,0), padx=20)
-    addUser = CTkButton(adminFrame, text='Add User', width=210, cursor='hand2', command=add_user)
-    addUser.grid(row=2, column=0, pady=(20,0), padx=20)
-    updateUser = CTkButton(adminFrame, text='Update User', width=210, cursor='hand2', command=update_user)
-    updateUser.grid(row=2, column=1, pady=(20,0), padx=20)
-    
-    quit_logout()
-    
-
-def treas_page():
-    '''adds the functions that treasurers can do to the menu'''
-    global treasFrame
-    
-    for widget in signup_window.winfo_children():
-        if isinstance(widget, CTkFrame):
-            widget.grid_forget()
-    
-    treasFrame = CTkFrame(signup_window, fg_color='white')
-    treasFrame.grid(row=0, column=0, pady=20, columnspan=2)
-
-    treas_label = tk.Label(treasFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
-    treas_label.grid(row=0, column=0, pady=(20,0), columnspan=2) 
-    
-    withdraw_transer = CTkButton(treasFrame, text='Issue Finances', width=210, cursor='hand2', command=make_withdraw)
-    withdraw_transer.grid(row=1, column=0, pady=(20,0), padx=20)
-    
-    transfer_transer = CTkButton(treasFrame, text='Issue transfer', width=210, cursor='hand2')
-    transfer_transer.grid(row=1, column=1, pady=(20,0), padx=20)
-
-    view_history = CTkButton(treasFrame, text='View History', width=210, cursor='hand2', command=db.save_transactions())
-    view_history.grid(row=2, column=0, pady=(20,0), padx=20)
-    
-    quit_logout()
-    
-
-def finofficer_addition():
-    '''adds the functions that financial officers can do to the menu'''
-    global finofFrame
-    
-    for widget in signup_window.winfo_children():
-        if isinstance(widget, CTkFrame):
-            widget.grid_forget()
-    
-    finofFrame = CTkFrame(signup_window, fg_color='white')
-    finofFrame.grid(row=3, column=0, pady=20, columnspan=2)
-    
-    finof_label = tk.Label(finofFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
-    finof_label.grid(row=0, column=0, pady=(20,0), columnspan=2) 
-    view_status = CTkButton(finofFrame, text='View Status', width=210, cursor='hand2')
-    view_status.grid(row=0, column=0, pady=(20,0), padx=20)
-
-
 def user_page():
     ''' A function to show the 'functionality' for users
     which was not defined in the exercise'''
@@ -175,6 +105,34 @@ def user_page():
     
 
 # # ADMIN POWERS
+def admin_page():
+    '''adds the functions that admins can do'''
+    global adminFrame
+    
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+    
+    adminFrame = CTkFrame(signup_window, fg_color='white')
+    adminFrame.grid(row=0, column=0, pady=20, columnspan=2)
+    
+    admin_label = tk.Label(adminFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
+    admin_label.grid(row=0, column=0, pady=20, columnspan=2)    
+    
+    addUser = CTkButton(adminFrame, text='Add User', width=210, cursor='hand2', command=add_user)
+    addUser.grid(row=1, column=0, pady=(20,0), padx=20)
+    updateUser = CTkButton(adminFrame, text='Update User', width=210, cursor='hand2', command=update_user)
+    updateUser.grid(row=1, column=1, pady=(20,0), padx=20)
+    removeUser = CTkButton(adminFrame, text='Remove User', width=210, cursor='hand2', command=remove_user)
+    removeUser.grid(row=2, column=0, pady=(20,0), padx=20)
+    addClub = CTkButton(adminFrame, text='Add a Club', width=210, cursor='hand2', command=add_club)
+    addClub.grid(row=2, column=1, pady=(20,0), padx=20)
+    printStat = CTkButton(adminFrame, text='Print Statement', width=460, cursor='hand2', command=db.save_data) #command=db.department_balances)
+    printStat.grid(row=3, column=0, columnspan =2, pady=(20,0), padx=20)
+    
+    quit_logout()
+
+
 def add_club():
     '''A function to add a new club, assigning a person to be a treasurer'''
 
@@ -228,9 +186,9 @@ def add_club():
     quit_logout()
     
     addFrame = CTkFrame(signup_window, fg_color='white', width=500)
-    addFrame.grid(row=0, column=0)
+    addFrame.grid(row=0, column=0, sticky='nsew')
     
-    clubinputLabel = CTkLabel(addFrame, text='Input a Name for the new club:', text_color='black', width=200)
+    clubinputLabel = CTkLabel(addFrame, text='Input a Name for the new club:', text_color='black', width=220)
     clubinputLabel.grid(row=0, column=0, pady=20, padx=20, sticky='w')
     clubinput = CTkEntry(addFrame, fg_color='white', width=200, text_color='black')
     clubinput.grid(row=0, column=1)
@@ -247,9 +205,9 @@ def add_club():
     
     # Button to Submit whatever is in the name or password bubbles
     buttonSubmit = CTkButton(addFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
-    buttonSubmit.grid(row=4, column=1, columnspan = 2, sticky='e')
+    buttonSubmit.grid(row=4, column=1, sticky='e')
     buttonBack = CTkButton(addFrame, text='Back', width=150, cursor='hand2', command=lambda: (admin_page()))
-    buttonBack.grid(row=4, column=0, columnspan = 2, sticky='w', padx=20)
+    buttonBack.grid(row=4, column=0, sticky='w', padx=20)
         
 
 def add_user():
@@ -271,6 +229,10 @@ def add_user():
         if department not in all_deps:
             messagebox.showerror("Alert", "No such department")
             return
+        if department == 'club':
+            messagebox.showerror("Alert", "No such department")
+            return
+            
                 
         # Call the add_user function to add the user
         db.add_user(login, password, role, department)
@@ -289,7 +251,7 @@ def add_user():
     quit_logout()
     # load in the actual frame
     adduserFrame = CTkFrame(signup_window, fg_color='white', width=500)
-    adduserFrame.grid(row=0, column=0)
+    adduserFrame.grid(row=0, column=0, sticky='nsew')
     # member input
     memberinputLabel = CTkLabel(adduserFrame, text='Input a login name for the new member:', text_color='black', width=200)
     memberinputLabel.grid(row=0, column=0, pady=20, padx=20, sticky='w')
@@ -308,9 +270,9 @@ def add_user():
     
     # Button to Submit whatever is in the name or password bubbles
     buttonSubmit = CTkButton(adduserFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
-    buttonSubmit.grid(row=4, column=1, columnspan = 2, sticky='e')
+    buttonSubmit.grid(row=4, column=1, sticky='e')
     buttonBack = CTkButton(adduserFrame, text='Back', width=150, cursor='hand2', command=lambda: (admin_page()))
-    buttonBack.grid(row=4, column=0, columnspan = 2, sticky='w', padx=20)
+    buttonBack.grid(row=4, column=0, sticky='w', padx=20)
 
 def update_user():
     '''updating member's department'''
@@ -319,7 +281,6 @@ def update_user():
         login = memberinput.get()
         department = departmentinput.get()
         role = str(roleinput.get())
-        print(role)
         password = passwordinput.get()
         all_deps = db.all_departments()
         
@@ -342,8 +303,16 @@ def update_user():
             messagebox.showerror("Alert", "No such role")
             return
 
+        if role == 'finofficer':
+            department = 'club'
         # Call the add_user function to add the user
         db.update_user(login, password, role, department)
+        messagebox.showinfo("Success", f"You updated {login}")
+        
+        memberinput.delete(0, "end")  # Clears the name
+        passwordinput.delete(0, "end")  # Clears the password
+        roleinput.delete(0, "end")  # Clears the role
+        departmentinput.delete(0, "end")  # Clears the department
     
     for widget in signup_window.winfo_children():
         if isinstance(widget, CTkFrame):
@@ -353,9 +322,9 @@ def update_user():
     quit_logout()
     # load in the actual frame
     userFrame = CTkFrame(signup_window, fg_color='white', width=500)
-    userFrame.grid(row=0, column=0)
+    userFrame.grid(row=0, column=0, sticky='nsew')
     # member input
-    memberinputLabel = CTkLabel(userFrame, text='Input the person you want to change:', text_color='black', width=200)
+    memberinputLabel = CTkLabel(userFrame, text='Input the person you want to change:', text_color='black', width=220)
     memberinputLabel.grid(row=1, column=0, pady=20, padx=20, sticky='w')
     memberinput = CTkEntry(userFrame, fg_color='white', width=200, text_color='black')
     memberinput.grid(row=1, column=1)
@@ -366,14 +335,14 @@ def update_user():
     passwordinput.grid(row=2, column=1)
     # role input
     roleinputLabel = CTkLabel(userFrame, text='Input a role for the member:', text_color='black', width=200)
-    roleinputLabel.grid(row=4, column=0, pady=20, padx=20, sticky='w')
+    roleinputLabel.grid(row=3, column=0, pady=20, padx=20, sticky='w')
     roleinput = CTkEntry(userFrame, fg_color='white', width=200, text_color='black')
-    roleinput.grid(row=4, column=1)
+    roleinput.grid(row=3, column=1)
     # department input
     departmentinputLabel = CTkLabel(userFrame, text='Input a department for the member:', text_color='black', width=200)
-    departmentinputLabel.grid(row=3, column=0, pady=20, padx=20, sticky='w')
+    departmentinputLabel.grid(row=4, column=0, pady=20, padx=20, sticky='w')
     departmentinput = CTkEntry(userFrame, fg_color='white', width=200, text_color='black')
-    departmentinput.grid(row=3, column=1)
+    departmentinput.grid(row=4, column=1)
     
     # Button to Submit whatever is in the name or password bubbles
     buttonSubmit = CTkButton(userFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
@@ -381,33 +350,119 @@ def update_user():
     buttonBack = CTkButton(userFrame, text='Back', width=150, cursor='hand2', command=lambda: (admin_page()))
     buttonBack.grid(row=5, column=0, columnspan = 2, sticky='w', padx=20)
 
+
+def remove_user():
+    def submit_form():
+        # actually turns the inputs into a new member
+        login = memberinput.get()
+        password = passwordinput.get()
+        
+        # Validation
+        if login == '' or password == '':
+            messagebox.showerror("Input Error", "Please fill in all fields!")
+            return
+
+        user = db.get_user(login, password)
+        if user is None:
+            messagebox.showerror('No such user',
+                                 'Login or password is incorrect.')
+            return
+        
+        id = db.get_id(login)[0][0]
+        db.delete_user(id)
+        messagebox.showinfo("Success", f"You deleted {login}")
+        
+        memberinput.delete(0, "end")  # Clears the name
+        passwordinput.delete(0, "end")  # Clears the password
+        
+    
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+
+    # load in the quit and logout buttons
+    quit_logout()
+    # load in the actual frame
+    userFrame = CTkFrame(signup_window, fg_color='white', width=500)
+    userFrame.grid(row=0, column=0, sticky='nsew')
+    # member input
+    memberinputLabel = CTkLabel(userFrame, text='Input the person you want to change:', text_color='black', width=220)
+    memberinputLabel.grid(row=1, column=0, pady=20, padx=20, sticky='w')
+    memberinput = CTkEntry(userFrame, fg_color='white', width=200, text_color='black')
+    memberinput.grid(row=1, column=1)
+    # password input
+    passwordinputLabel = CTkLabel(userFrame, text='Input their password to verify:', text_color='black', width=200)
+    passwordinputLabel.grid(row=2, column=0, pady=20, padx=20, sticky='w')
+    passwordinput = CTkEntry(userFrame, fg_color='white', width=200, text_color='black')
+    passwordinput.grid(row=2, column=1)
+    
+    # Button to Submit whatever is in the name or password bubbles
+    buttonSubmit = CTkButton(userFrame, text='Delete', width=150, cursor='hand2', command=submit_form)
+    buttonSubmit.grid(row=5, column=1, columnspan = 2, sticky='e')
+    buttonBack = CTkButton(userFrame, text='Back', width=150, cursor='hand2', command=lambda: (admin_page()))
+    buttonBack.grid(row=5, column=0, columnspan = 2, sticky='w', padx=20)
+
 # TRESURER POWERS
+def treas_page():
+    '''adds the functions that treasurers can do to the menu'''
+    global treasFrame
+
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+
+    treasFrame = CTkFrame(signup_window, fg_color='white')
+    treasFrame.grid(row=0, column=0, pady=20, columnspan=2, sticky='nsew')
+
+    treas_label = tk.Label(treasFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
+    treas_label.grid(row=0, column=0, pady=(20,0), columnspan=2) 
+
+    withdraw_transer = CTkButton(treasFrame, text='Issue Finances', width=210, cursor='hand2', command=make_withdraw)
+    withdraw_transer.grid(row=1, column=0, pady=(20,0), padx=20)
+
+    view_history = CTkButton(treasFrame, text='View History', width=210, cursor='hand2', command=db.save_transactions)
+    view_history.grid(row=1, column=1, pady=(20,0), padx=20)
+
+    transfer_transer = CTkButton(treasFrame, text='Issue transfer', width=210, cursor='hand2', command=transfer)
+    transfer_transer.grid(row=2, column=0, pady=(20,0), padx=20)
+
+    quit_logout()
+
 
 def make_withdraw():
 
     def submit_form():
     # actually turns the inputs into a new member
         try:
-            withdraw = int(withdrawinput.get())
-            deposit = int(withdrawinput.get())
+            withdraw = withdrawinput.get()
+            deposit = depositinput.get()
             login = nameEntry.get()
-            department = db.get_department(login)
+            department = db.get_department(login)[0][0]
         except:
-            messagebox.showerror("Input Error", "Please put in valid inputs")
+            messagebox.showerror("Input Error", "Please put in valid inputs!")
             return
 
     # Validation
-        if withdraw == '' and deposit =='':
+        if not withdraw and not deposit:
             messagebox.showerror("Input Error", "Please fill at least one field!")
             return
-
-        if withdraw != '':
+        elif withdraw and not deposit:
         # Call the withdraw function
-            db.make_withdraw(department, withdraw)
-
-        if withdraw != '':
+            if db.make_withdraw(department, int(withdraw)) is not None:
+                messagebox.showinfo('Success', 'Money withdrawn!' )
+            else: messagebox.showerror('Alert', 'Not enough money in the account!')
+        elif deposit and not withdraw:
         # Call the deposit function
-            db.make_deposit(department, deposit)
+            db.make_deposit(department, int(deposit))
+            messagebox.showinfo('Success', 'Money deposited' )
+        elif deposit and withdraw:
+        # Call both functions
+            db.make_deposit(department, int(deposit))
+            db.make_withdraw(department, int(withdraw))
+            messagebox.showinfo('Success', 'Money deposited and withdrawn!' )
+        
+        withdrawinput.delete(0, "end")  # Clears the name
+        depositinput.delete(0, "end")  # Clears the password
 
     for widget in signup_window.winfo_children():
         if isinstance(widget, CTkFrame):
@@ -434,6 +489,78 @@ def make_withdraw():
     buttonBack.grid(row=5, column=0, columnspan = 2, sticky='w', padx=20)
 
 
+def transfer():
+    def submit_form():
+    # actually turns the inputs into a new member
+        try:
+            isfrom = db.get_department(nameEntry.get())[0][0]
+            print(isfrom)
+            department = departmentinput.get()
+            transfer = int(transferinput.get())
+            all_deps = db.all_departments()
+            print(all_deps)
+        except:
+            messagebox.showerror("Input Error", "Please put in valid inputs!")
+            return
+
+    # Validation
+        if not department and not transfer:
+            messagebox.showerror("Input Error", "Please fill at least one field!")
+            return
+        
+        if department not in all_deps:
+            messagebox.showerror("Alert", "No such department")
+            return
+
+        db.transfer(transfer, isfrom, department)
+        departmentinput.delete(0, "end")  # Clears the name
+        transferinput.delete(0, "end")  # Clears the password
+
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+
+    quit_logout()
+
+    transferFrame = CTkFrame(signup_window, fg_color='white', width=500)
+    transferFrame.grid(row=0, column=0)
+
+    transferLabel = CTkLabel(transferFrame, text='set the amount you want to transfer', text_color='black', width=200)
+    transferLabel.grid(row=0, column=0, pady=20, padx=20, sticky='w')
+    transferinput = CTkEntry(transferFrame, fg_color='white', width=220, text_color='black')
+    transferinput.grid(row=0, column=1, padx=(0,20))
+
+    departmentLabel = CTkLabel(transferFrame, text='Set what club gets the transfer', text_color='black', width=200)
+    departmentLabel.grid(row=1, column=0, pady=20, padx=20, sticky='w')
+    departmentinput = CTkEntry(transferFrame, fg_color='white', width=220, text_color='black')
+    departmentinput.grid(row=1, column=1, padx=(0,20))
+
+    buttonSubmit = CTkButton(transferFrame, text='Submit', width=150, cursor='hand2', command=submit_form)
+    buttonSubmit.grid(row=5, column=1, columnspan = 2, sticky='e', padx=20)
+    buttonBack = CTkButton(transferFrame, text='Back', width=150, cursor='hand2', command=lambda: (treas_page()))
+    buttonBack.grid(row=5, column=0, columnspan = 2, sticky='w', padx=20)
+
+
+
+# FINOFFICER POWERS
+def finofficer_addition():
+    '''adds the functions that financial officers can do to the menu'''
+    global finofFrame
+    
+    for widget in signup_window.winfo_children():
+        if isinstance(widget, CTkFrame):
+            widget.grid_forget()
+    
+    finofFrame = CTkFrame(signup_window, fg_color='white')
+    finofFrame.grid(row=3, column=0, pady=20, columnspan=2)
+    
+    finof_label = tk.Label(finofFrame, text= f'Welcome {nameEntry.get()}!', font=('Times New Roman', 20, 'bold'), background='white')
+    finof_label.grid(row=0, column=0, pady=(20,0), columnspan=2) 
+    view_status = CTkButton(finofFrame, text='View Status', width=210, cursor='hand2')
+    view_status.grid(row=0, column=0, pady=(20,0), padx=20)
+
+
+
 
 ### DATABASE SHIT
 db = Database(sqlite3.connect('database.db'),
@@ -452,19 +579,6 @@ members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
 
 for i in members:
     db.add_user(*i)
-
-baseball = Account('baseball', 1000)
-hiking = Account("hiking", 1500)
-Lena = Treasurer(baseball)
-Peter = Treasurer(hiking)
-
-print(baseball.balance, hiking.balance)
-Peter.transfer(250, baseball)
-
-print(baseball.balance, hiking.balance)
-
-Peter.make_withdraw(100)
-print(baseball.balance, hiking.balance)
 
 
 # # Page of the login
