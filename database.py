@@ -46,9 +46,7 @@ class Database:
             self.cursor.execute("""SELECT role FROM users WHERE login = (?) 
                                 AND password = (?)""", (login, password))
             return self.cursor.fetchone()[0]
-        except TypeError:
-            print('Login or password is incorrect.')
-            return None
+        except TypeError: return None
 
 
     def department_members(self, department):
@@ -165,41 +163,10 @@ class Database:
             writer.writerows(info)
 
 
+    def current_balance(self, department):
 
-'''ЁБАНЫЕ ТЕСТЫ'''
-
-
-
-db = Database(sqlite3.connect('database.db'),
-              sqlite3.connect('database.db').cursor())
-
-db.make_deposit('football', 100)
-db.make_deposit('hiking', 50)
-db.make_deposit('hiking', 25)
-db.make_withdraw('football', 20)
-db.make_deposit('football', 500)
-db.make_withdraw('hiking', 75)
-db.make_withdraw('hiking', 25)
-db.transfer(150, 'football', 'hiking')
-
-members = [('Mary_Brown', 'NqKX069L', 'admin', 'club'),
-           ('John_Elder', 'OnH139sp', 'finofficer', 'club'),
-           ('Wes_Smith', '850QuL96', 'treasurer', 'football'),
-           ('Bob_Miller', '0ITF8cO2', 'user', 'football'),
-           ('Dan_White', 'tSh8c8j3', 'treasurer', 'hiking'),
-           ('Tim_Smith', 'Yor4T4Z2', 'user', 'hiking'),
-           ('Joe_Black', 'fC584HGq', 'user', 'football'),
-           ('Laura_Lie', '3S2k5WYu', 'user', 'hiking'),
-           ('Rico_Salieri', 'c1jV1k4p', 'user', 'football'),
-           ('Anton_Kusnezow', '253DzRap', 'user', 'hiking')]
-
-for i in members:
-    db.add_user(*i)
-
-db.add_user('Lera_Kolos', 'A94bsd7e', 'member', 'football')
-
-db.delete_user('8')
-
-db.assign_treasurer('3', 'football')
-
-db.save_status()
+        self.cursor.execute("""SELECT balance FROM transactions
+                            WHERE department = (?)
+                            ORDER BY rowid DESC LIMIT 1""",
+                            (department,))
+        return self.cursor.fetchone()[0]
