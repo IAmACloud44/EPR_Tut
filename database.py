@@ -168,10 +168,12 @@ class Database:
                                 WHERE department = (?)
                                 ORDER BY rowid DESC LIMIT 1""", (recipient,))
             status = self.cursor.fetchone()
-            recipient_balance = status[0] + money
+            if status is None: recipient_balance = money
+            else: recipient_balance = status[0] + money
             operation = (f"receive {money} € from {donor} department")
             self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                                 (recipient, operation, recipient_balance))
+            self.connection.commit()
 
 
     def view_history(self, department='club'):
