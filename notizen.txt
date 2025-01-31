@@ -4,25 +4,17 @@ admins can
 + update club member's info (update member)
 + remove club member (remove)
 + save current status in csv (only as a statement of users, not overall stuff)
-Mary_Brown
-NqKX069L
 
 treasurers can
 + make deposits (done with withdrawals)
 + make withdrawals (done with deposits)
 + transfer money to other accounts (even to oneself)
 + view transaction history (AAAAAAAAAAAe)
-Dan_White
-tSh8c8j3
 
 finance officers can
 + view status of account 
 + view status overall (print statement like admins, will double it)
-John_Elder
-OnH139sp
 
 users can
 + log in (done)
 + be redirected?? (done)
-Rico_Salieri
-c1jV1k4p
