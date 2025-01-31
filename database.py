@@ -31,7 +31,6 @@ class Database:
                        "operation TEXT,"
                        "balance REAL)")
 
-
     def add_user(self, login, password, role, department):
         """
         Adds a new user to the users table of the DB.
@@ -40,21 +39,20 @@ class Database:
         self.cursor.execute("SELECT MAX(id) FROM users")
         last_id = self.cursor.fetchone()[0]
         id = last_id + 1 if last_id is not None else 1
-
         self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)",
                             (id, login, password, role, department))
         self.connection.commit()
+
 
     def update_user(self, login, password, role, department):
         """
         Allows to update existing users' information.
         Does not return anything, just make changes directly in the DB.
         """
-        self.cursor.execute("""UPDATE users SET department = ?, role = ? 
-                            WHERE login = ? AND password = ?""", 
+        self.cursor.execute("""UPDATE users SET department = ?, role = ?
+                             WHERE login = ? AND password = ?""",
                             (department, role, login, password))
         self.connection.commit()
-
 
     def delete_user(self, id):
         """
@@ -64,7 +62,6 @@ class Database:
         """
         self.cursor.execute("DELETE FROM users WHERE rowid = (?)", (id,))
         self.connection.commit()
-
 
     def get_user(self, login, password):
         """
@@ -79,19 +76,18 @@ class Database:
         except TypeError:
             return None
 
+
     def all_departments(self):
         """
         Creates a list of all departments in the users table.
         Returns a sorted list with the departments.
         """
-        self.cursor.execute("""SELECT department FROM users""")
+        self.cursor.execute("""SELECT department FROM transactions""")
         departments = self.cursor.fetchall()
-
         # Convert list of tuples to a set to remove duplicates,
         # then back to a sorted list.
         unique_departments = sorted(set(dept[0] for dept in departments))
         return unique_departments
-
 
     def department_members(self, department):
         """
@@ -100,9 +96,7 @@ class Database:
         """
         self.cursor.execute("""SELECT * FROM users
                             WHERE department = (?)""", (department,))
-
         return self.cursor.fetchall()
-
 
     def get_id(self, login):
         """
@@ -113,7 +107,6 @@ class Database:
                             WHERE login = (?)""", (login,))
         return self.cursor.fetchall()
 
-
     def get_department(self, login):
         """
         Finds a department of a member from the users table by his login.
@@ -122,7 +115,6 @@ class Database:
         self.cursor.execute("""SELECT department FROM users
                             WHERE login = (?)""", (login,))
         return self.cursor.fetchall()
-        
 
     def assign_treasurer(self, id, department):
         """
@@ -134,7 +126,8 @@ class Database:
         in_department = False
         for i in self.department_members(department):
             # If he is, the variable changes to True.
-            if i[0] == int(id): in_department = True
+            if i[0] == int(id):
+                in_department = True
         # If the person isn't a member of the department, return None.
         if in_department is False:
             return None
@@ -143,7 +136,37 @@ class Database:
             self.cursor.execute("""UPDATE users SET role = 'treasurer'
                                     WHERE id = (?)""", (id,))
             self.connection.commit()
+
+    def check_treasurer(self, department):
+        """Only one treasurer can be there per department, here it checks for
+        it and makes sure only one is a treasurer. To reassign roles, one needs
+        to remove the role, then add it."""
+
+        self.cursor.execute("""SELECT COUNT(*) FROM users
+                            WHERE department = (?) AND role = 'treasurer'
+                            """, (department,))
+
+        treasurer_count = int(self.cursor.fetchone()[0])
+
+        if treasurer_count > 0:
+            return True
+        else:
+            return False
     
+    def check_if_treasurer(self, login):
+        '''Checks wether the person is already a treasurer or not'''
+        
+        self.cursor.execute("""SELECT COUNT(*) FROM users
+                            WHERE role = 'treasurer'
+                            AND login = (?)""",
+                            (login,))
+        
+        treasurer_count = int(self.cursor.fetchone()[0])
+        
+        if treasurer_count > 0:
+            return True
+        else:
+            return False
 
     def update_department(self, login, department):
         """
@@ -154,7 +177,6 @@ class Database:
                             WHERE login = ?""", (department, login))
         self.connection.commit()
 
-
     def update_role(self, login, role, department):
         """
         Allows to change the role of a member of a specific department
@@ -164,6 +186,7 @@ class Database:
         self.cursor.execute("""UPDATE users SET department = ? AND role = ?
                             WHERE login = ?""", (department, role, login))
         self.connection.commit()
+
 
     def make_deposit(self, department, money):
         """
@@ -187,7 +210,6 @@ class Database:
                             (department, operation, balance))
         self.connection.commit()
 
-
     def make_withdraw(self, department, money):
         """
         Decreases balance of a specific department by a certain amount
@@ -208,14 +230,14 @@ class Database:
         if status is None or status[0] < money:
             return None
         # Otherwise, the balance will be reduced by a certain amount of money.
-        else: balance = status[0] - money
+        else:
+            balance = status[0] - money
         # Adds an operation description to the row.
         operation = f"withdraw of {money} € was made"
         self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                             (department, operation, balance))
         self.connection.commit()
         return balance
-
 
     def transfer(self, money, donor, recipient):
         """
@@ -251,15 +273,16 @@ class Database:
             status = self.cursor.fetchone()
             # If the recipient's balance was not yet defined, its balance
             # equals the amount of money added.
-            if status is None: recipient_balance = money
+            if status is None:
+                recipient_balance = money
             # Otherwise, it will be summarized with the money.
-            else: recipient_balance = status[0] + money
+            else:
+                recipient_balance = status[0] + money
             # Creates an operation description for the row.
             operation = (f"receive {money} € from {donor} department")
             self.cursor.execute("""INSERT INTO transactions VALUES (?,?,?)""",
                                 (recipient, operation, recipient_balance))
             self.connection.commit()
-
 
     def view_history(self, department='club'):
         """
@@ -277,6 +300,7 @@ class Database:
         self.connection.commit()
         return self.cursor.fetchall()
 
+
     def save_data(self):
         """
         Saves a current users table as a .csv file. It's not very good-looking
@@ -293,8 +317,10 @@ class Database:
             writer.writerow(columns)
             writer.writerows(info)
 
+<<<<<<< HEAD
+=======
 
-
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
     def save_transactions(self):
         """
         Saves a current transaction table as a .csv file. It's just as ugly
@@ -309,18 +335,29 @@ class Database:
             writer.writerow(columns)
             writer.writerows(info)
 
+<<<<<<< HEAD
     def current_balance(self, department):
+        """
+        Saves the current balance table of a sepcified department as a .csv
+        file.
+        """
+=======
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
 
+    def current_balance(self, department):
+        """
+        Finds the last balance status of a specific department.
+        Returns None if no balance is found. Otherwise, creates .csv file
+        with the current balance of the department.
+        """
         self.cursor.execute("""SELECT balance FROM transactions
                             WHERE department = (?)
-                            ORDER BY rowid DESC LIMIT 1""",
-                            (department,))
-
+                            ORDER BY rowid DESC LIMIT 1""", (department,))
+        # Saves the last balance status of the department.
         status = self.cursor.fetchone()
-
+        # If it was not found, returns None.
         if status is None:
             return
-
         info = status[0]
         columns = ['department', 'balance']
         path = f"./current_balance_{department}.csv"
@@ -329,23 +366,37 @@ class Database:
             writer.writerow(columns)
             writer.writerow([department, info])
 
+<<<<<<< HEAD
     def full_balance(self):
-
-        self.cursor.execute("""SELECT department, balance 
-                            FROM transactions 
+        """
+        Saves the entire balance table of as a .csv file.
+        """
+        self.cursor.execute("""SELECT department, balance
+                            FROM transactions
                             WHERE rowid IN (
-                                SELECT MAX(rowid) FROM transactions 
+                                SELECT MAX(rowid) FROM transactions
                                 GROUP BY department
                             )
                         """)
-        results = self.cursor.fetchall()
+=======
 
+    def full_balance(self):
+        """
+        Creates .csv file with the current balance status of all departments.
+        If anything was not found, returns None.
+        """
+        self.cursor.execute("""SELECT department, balance 
+                            FROM transactions 
+                            WHERE rowid IN (
+                            SELECT MAX(rowid) FROM transactions 
+                            GROUP BY department)""")
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
+        results = self.cursor.fetchall()
+        # If nothing is in the table, returns None.
         if not results:
             return
-
         columns = ['department', 'balance']
         path = "./all_departments_balance.csv"
-
         with open(path, 'w', newline='') as transactions_file:
             writer = csv.writer(transactions_file)
             writer.writerow(columns)

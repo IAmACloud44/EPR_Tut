@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7737dd8-8dd2-46bb-a20a-7b4a4eddbced" name="Changes" comment="Added comments and docstrings.">
-      <change afterPath="$PROJECT_DIR$/EPR_08_Feldmann_7528006_Kolos_8456041.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/all_departments_balance.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notizen.txt" beforeDir="false" afterPath="$PROJECT_DIR$/notizen.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transactions.csv" beforeDir="false" afterPath="$PROJECT_DIR$/transactions.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.csv" beforeDir="false" afterPath="$PROJECT_DIR$/users.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,9 +47,9 @@
     "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/rener/Documents/Uni/Python/test.py",
+    "last_opened_file_path": "C:/Users/rener/Documents/GitHub/EPR_Teamwork/database.py",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -63,7 +58,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.database">
     <configuration name="database" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EPR_Teamwork" />
       <option name="ENV_FILES" value="" />
@@ -190,7 +185,8 @@
       <workItem from="1738185445780" duration="4911000" />
       <workItem from="1738246555070" duration="83000" />
       <workItem from="1738255340015" duration="1473000" />
-      <workItem from="1738304857554" duration="7605000" />
+      <workItem from="1738304857554" duration="8160000" />
+      <workItem from="1738322671891" duration="1250000" />
     </task>
     <task id="LOCAL-00001" summary="Completed class Menu according to the diagramm.">
       <option name="closed" value="true" />
