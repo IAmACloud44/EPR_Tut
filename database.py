@@ -1,5 +1,5 @@
-import sqlite3
 import csv
+
 
 class Database:
     """
@@ -42,7 +42,7 @@ class Database:
         id = last_id + 1 if last_id is not None else 1
 
         self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)",
-                       (id, login, password, role, department))
+                            (id, login, password, role, department))
         self.connection.commit()
 
     def update_user(self, login, password, role, department):
@@ -73,12 +73,11 @@ class Database:
         member. Otherwise, it returns None.
         """
         try:
-            self.cursor.execute("""SELECT role FROM users WHERE login = (?) 
+            self.cursor.execute("""SELECT role FROM users WHERE login = (?)
                                 AND password = (?)""", (login, password))
             return self.cursor.fetchone()[0]
         except TypeError:
             return None
-
 
     def all_departments(self):
         """
@@ -101,6 +100,7 @@ class Database:
         """
         self.cursor.execute("""SELECT * FROM users
                             WHERE department = (?)""", (department,))
+
         return self.cursor.fetchall()
 
 
@@ -164,7 +164,6 @@ class Database:
         self.cursor.execute("""UPDATE users SET department = ? AND role = ?
                             WHERE login = ?""", (department, role, login))
         self.connection.commit()
-
 
     def make_deposit(self, department, money):
         """
@@ -237,7 +236,6 @@ class Database:
         # It's also impossible to withdraw more money than there is currently
         # in the account.
         if status is None or status[0] < money:
-            print('Not enough money in the account.')
             return None
         # Otherwise, the donor's balance will be decreased.
         else:
@@ -279,7 +277,6 @@ class Database:
         self.connection.commit()
         return self.cursor.fetchall()
 
-
     def save_data(self):
         """
         Saves a current users table as a .csv file. It's not very good-looking
@@ -297,6 +294,7 @@ class Database:
             writer.writerows(info)
 
 
+
     def save_transactions(self):
         """
         Saves a current transaction table as a .csv file. It's just as ugly
@@ -310,3 +308,45 @@ class Database:
             writer = csv.writer(transactions_file)
             writer.writerow(columns)
             writer.writerows(info)
+
+    def current_balance(self, department):
+
+        self.cursor.execute("""SELECT balance FROM transactions
+                            WHERE department = (?)
+                            ORDER BY rowid DESC LIMIT 1""",
+                            (department,))
+
+        status = self.cursor.fetchone()
+
+        if status is None:
+            return
+
+        info = status[0]
+        columns = ['department', 'balance']
+        path = f"./current_balance_{department}.csv"
+        with open(path, 'w', newline='') as transactions_file:
+            writer = csv.writer(transactions_file)
+            writer.writerow(columns)
+            writer.writerow([department, info])
+
+    def full_balance(self):
+
+        self.cursor.execute("""SELECT department, balance 
+                            FROM transactions 
+                            WHERE rowid IN (
+                                SELECT MAX(rowid) FROM transactions 
+                                GROUP BY department
+                            )
+                        """)
+        results = self.cursor.fetchall()
+
+        if not results:
+            return
+
+        columns = ['department', 'balance']
+        path = "./all_departments_balance.csv"
+
+        with open(path, 'w', newline='') as transactions_file:
+            writer = csv.writer(transactions_file)
+            writer.writerow(columns)
+            writer.writerows(results)
