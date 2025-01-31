@@ -22,7 +22,10 @@ class Database:
 
 
     def add_user(self, login, password, role, department):
-
+        """
+        Adds a new user to the users table of the DB.
+        Does not return anything, just make changes directly in the DB.
+        """
         self.cursor.execute("SELECT MAX(id) FROM users")
         last_id = self.cursor.fetchone()[0]
         id = last_id + 1 if last_id is not None else 1
@@ -32,7 +35,10 @@ class Database:
         self.connection.commit()
 
     def update_user(self, login, password, role, department):
-        
+        """
+        Allows to update existing users' information.
+        Does not return anything, just make changes directly in the DB.
+        """
         self.cursor.execute("""UPDATE users SET department = ?, role = ? 
                             WHERE login = ? AND password = ?""", 
                             (department, role, login, password))
@@ -41,14 +47,20 @@ class Database:
 
     def delete_user(self, id):
         """
-        id should be given as a string! (It's just how it works...)
+        Removes a row from the users table by its id.
+        Important: id should be given as a string!
+        Changes DB directly, doesn't return anything.
         """
         self.cursor.execute("DELETE FROM users WHERE rowid = (?)", (id,))
         self.connection.commit()
 
 
     def get_user(self, login, password):
-
+        """
+        The following function is used primarily for log in in the console.
+        If login and password are both in DB, it returns the role of this
+        member. Otherwise, it returns None.
+        """
         try:
             self.cursor.execute("""SELECT role FROM users WHERE login = (?) 
                                 AND password = (?)""", (login, password))
@@ -58,6 +70,9 @@ class Database:
 
 
     def all_departments(self):
+        """
+
+        """
         self.cursor.execute("""SELECT department FROM users""")
         departments = self.cursor.fetchall()
 
