@@ -43,7 +43,6 @@ class Database:
                             (id, login, password, role, department))
         self.connection.commit()
 
-
     def update_user(self, login, password, role, department):
         """
         Allows to update existing users' information.
@@ -75,7 +74,6 @@ class Database:
             return self.cursor.fetchone()[0]
         except TypeError:
             return None
-
 
     def all_departments(self):
         """
@@ -152,17 +150,17 @@ class Database:
             return True
         else:
             return False
-    
+
     def check_if_treasurer(self, login):
         '''Checks wether the person is already a treasurer or not'''
-        
+
         self.cursor.execute("""SELECT COUNT(*) FROM users
                             WHERE role = 'treasurer'
                             AND login = (?)""",
                             (login,))
-        
+
         treasurer_count = int(self.cursor.fetchone()[0])
-        
+
         if treasurer_count > 0:
             return True
         else:
@@ -186,7 +184,6 @@ class Database:
         self.cursor.execute("""UPDATE users SET department = ? AND role = ?
                             WHERE login = ?""", (department, role, login))
         self.connection.commit()
-
 
     def make_deposit(self, department, money):
         """
@@ -300,7 +297,6 @@ class Database:
         self.connection.commit()
         return self.cursor.fetchall()
 
-
     def save_data(self):
         """
         Saves a current users table as a .csv file. It's not very good-looking
@@ -317,13 +313,6 @@ class Database:
             writer.writerow(columns)
             writer.writerows(info)
 
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
-=======
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
     def save_transactions(self):
         """
         Saves a current transaction table as a .csv file. It's just as ugly
@@ -337,18 +326,6 @@ class Database:
             writer = csv.writer(transactions_file)
             writer.writerow(columns)
             writer.writerows(info)
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-    def current_balance(self, department):
-        """
-        Saves the current balance table of a sepcified department as a .csv
-        file.
-        """
-=======
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
-=======
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
 
     def current_balance(self, department):
         """
@@ -372,45 +349,28 @@ class Database:
             writer.writerow(columns)
             writer.writerow([department, info])
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     def full_balance(self):
         """
-        Saves the entire balance table of as a .csv file.
+        Creates .csv file with the current balance status of all departments.
+        If anything was not found, returns None.
         """
         self.cursor.execute("""SELECT department, balance
-                            FROM transactions
-                            WHERE rowid IN (
-                                SELECT MAX(rowid) FROM transactions
-                                GROUP BY department
-                            )
-                        """)
-=======
+                             FROM transactions
+                             WHERE rowid IN (
+                             SELECT MAX(rowid) FROM transactions
+                             GROUP BY department)""")
 
     def full_balance(self):
         """
         Creates .csv file with the current balance status of all departments.
         If anything was not found, returns None.
         """
-        self.cursor.execute("""SELECT department, balance 
-                            FROM transactions 
-                            WHERE rowid IN (
-                            SELECT MAX(rowid) FROM transactions 
-                            GROUP BY department)""")
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
-=======
+        self.cursor.execute("""SELECT department, balance
+                             FROM transactions
+                             WHERE rowid IN (
+                             SELECT MAX(rowid) FROM transactions
+                             GROUP BY department)""")
 
-    def full_balance(self):
-        """
-        Creates .csv file with the current balance status of all departments.
-        If anything was not found, returns None.
-        """
-        self.cursor.execute("""SELECT department, balance 
-                            FROM transactions 
-                            WHERE rowid IN (
-                            SELECT MAX(rowid) FROM transactions 
-                            GROUP BY department)""")
->>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
         results = self.cursor.fetchall()
         # If nothing is in the table, returns None.
         if not results:

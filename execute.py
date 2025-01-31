@@ -275,7 +275,7 @@ def add_user():
         if department == 'club':
             messagebox.showerror("Alert", "No such department")
             return
-        user = db.get_user(nameEntry.get(), passwordEntry.get())
+        user = db.get_user(login, password)
         if user is not None:
             messagebox.showerror('Alert',
                                  'This person exists already.')

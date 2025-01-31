@@ -1,0 +1,12 @@
+id,login,password,role,department
+1,Ensign_Twiva,NqKX069L,admin,club
+2,Beckett_Mariner,OnH139sp,finofficer,club
+3,Wes_Crusher,850QuL96,treasurer,football
+4,Sam_Rutherford,0ITF8cO2,user,football
+5,Jack_Ransom,tSh8c8j3,treasurer,hiking
+6,Dvana_Tendi,Yor4T4Z2,user,hiking
+7,Leutenant_Castro,fC584HGq,user,football
+8,Mo_Opsy,3S2k5WYu,user,hiking
+9,Bradward_Boimler,c1jV1k4p,user,football
+10,Anton_Kusnezow,253DzRap,user,hiking
+11,Cloud,NqKX069L,user,football
