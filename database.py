@@ -320,6 +320,9 @@ class Database:
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
+=======
 >>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
     def save_transactions(self):
         """
@@ -336,11 +339,14 @@ class Database:
             writer.writerows(info)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def current_balance(self, department):
         """
         Saves the current balance table of a sepcified department as a .csv
         file.
         """
+=======
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
 =======
 >>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
 
@@ -367,6 +373,7 @@ class Database:
             writer.writerow([department, info])
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def full_balance(self):
         """
         Saves the entire balance table of as a .csv file.
@@ -378,6 +385,19 @@ class Database:
                                 GROUP BY department
                             )
                         """)
+=======
+
+    def full_balance(self):
+        """
+        Creates .csv file with the current balance status of all departments.
+        If anything was not found, returns None.
+        """
+        self.cursor.execute("""SELECT department, balance 
+                            FROM transactions 
+                            WHERE rowid IN (
+                            SELECT MAX(rowid) FROM transactions 
+                            GROUP BY department)""")
+>>>>>>> 134494e6152806a870d6baa4a7213c4fb6abb47b
 =======
 
     def full_balance(self):
